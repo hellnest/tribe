@@ -1,0 +1,97 @@
+#!/bin/bash
+
+job_configure_users()
+{
+	msg_job_start "job_configure_users"
+
+	msg "mount {proc,sys,dev}"
+	mount -v -t proc none ${mountpoint}/proc 
+	mount -v -t sysfs none ${mountpoint}/sys 
+	mount -v -o bind /dev ${mountpoint}/dev 
+
+	msg "create bundle group"
+	chroot ${mountpoint} /usr/sbin/groupadd bundle
+
+	msg "setup the user's groups"
+
+	chroot ${mountpoint} /usr/bin/gpasswd -a ${user_name} users
+	chroot ${mountpoint} /usr/bin/gpasswd -a ${user_name} audio
+	chroot ${mountpoint} /usr/bin/gpasswd -a ${user_name} video
+	chroot ${mountpoint} /usr/bin/gpasswd -a ${user_name} network
+	chroot ${mountpoint} /usr/bin/gpasswd -a ${user_name} optical
+	chroot ${mountpoint} /usr/bin/gpasswd -a ${user_name} floppy
+	chroot ${mountpoint} /usr/bin/gpasswd -a ${user_name} lp
+	chroot ${mountpoint} /usr/bin/gpasswd -a ${user_name} log
+	chroot ${mountpoint} /usr/bin/gpasswd -a ${user_name} power
+	chroot ${mountpoint} /usr/bin/gpasswd -a ${user_name} camera
+	chroot ${mountpoint} /usr/bin/gpasswd -a ${user_name} scanner
+	chroot ${mountpoint} /usr/bin/gpasswd -a ${user_name} storage
+	chroot ${mountpoint} /usr/bin/gpasswd -a ${user_name} locate
+	chroot ${mountpoint} /usr/bin/gpasswd -a ${user_name} bundle
+
+	msg "create common dirs"
+	chroot ${mountpoint} /bin/mkdir -p -v /home/${user_name}/Desktop
+	chroot ${mountpoint} /bin/mkdir -p -v /home/${user_name}/.kde4/Autostart
+	chroot ${mountpoint} /bin/mkdir -p -v /home/${user_name}/.kde4/env
+	chroot ${mountpoint} /bin/mkdir -p -v /home/${user_name}/.kde4/share/config
+	chroot ${mountpoint} /bin/mkdir -p -v /home/${user_name}/.kde4/share/apps/konqueror
+	chroot ${mountpoint} /bin/mkdir -p -v /home/${user_name}/.local/share
+
+	msg "setup gtk config"
+	cp -v /etc/skel/.gtkrc-2.0-kde4 ${mountpoint}/home/${user_name}/.gtkrc-2.0-kde4
+	echo "export GTK2_RC_FILES=/home/${user_name}/.gtkrc-2.0-kde4" > ${mountpoint}/home/${user_name}/.kde4/env/gtk-qt-engine.rc.sh
+	chmod a+x ${mountpoint}/home/${user_name}/.kde4/env/gtk-qt-engine.rc.sh
+
+	msg "setup chakra settings"
+	cp -v /etc/skel/ksplashrc ${mountpoint}/home/${user_name}/.kde4/share/config/ksplashrc
+	cp -v /etc/skel/plasma-desktop-appletsrc ${mountpoint}/home/${user_name}/.kde4/share/config/plasma-desktop-appletsrc
+	cp -v /etc/skel/plasmarc ${mountpoint}/home/${user_name}/.kde4/share/config/plasmarc
+	cp -v /etc/skel/kcmfonts ${mountpoint}/home/${user_name}/.kde4/share/config/kcmfonts
+	cp -v /etc/skel/bookmarks.xml ${mountpoint}/home/${user_name}/.kde4/share/apps/konqueror/bookmarks.xml
+	cp -v /etc/skel/rekonqrc ${mountpoint}/home/${user_name}/.kde4/share/config/rekonqrc
+	cp -v /etc/skel/khotkeysrc ${mountpoint}/home/${user_name}/.kde4/share/config/khotkeysrc
+	cp -v /etc/skel/kglobalshortcutsrc ${mountpoint}/home/${user_name}/.kde4/share/config/kglobalshortcutsrc
+        cp -v /etc/skel/yakuakerc ${mountpoint}/home/${user_name}/.kde4/share/config/yakuakerc
+        cp -v /etc/skel/kickoffrc ${mountpoint}/home/${user_name}/.kde4/share/config/kickoffrc
+	cp -v /etc/skel/networkmanagementrc ${mountpoint}/home/${user_name}/.kde4/share/config/networkmanagementrc
+	chroot ${mountpoint} ln -sf /usr/bin/bluedevil-monolithic /home/${user_name}/.kde4/Autostart/bluedevil-monolithic
+	cp -vf /etc/skel/.bashrc ${mountpoint}/home/${user_name}/.bashrc
+
+	msg "adjust default cursor: white-cursor"
+	cp -v /etc/skel/kcminputrc ${mountpoint}/home/${user_name}/.kde4/share/config/kcminputrc
+	cp -v /etc/skel/kdeglobals ${mountpoint}/home/${user_name}/.kde4/share/config/kdeglobals
+
+	# fix quirks
+	if [ -e "${mountpoint}/home/${user_name}/10-keyboard.conf" ] ; then
+	  msg "clean 10-keyboard.conf"
+	  rm -v ${mountpoint}/home/${user_name}/10-keyboard.conf
+	fi
+
+	if [ -e "${mountpoint}/home/${user_name}/mirrorlist" ] ; then
+	  msg "clean mirrorlist"
+	  rm -v ${mountpoint}/home/${user_name}/mirrorlist
+	fi
+
+	msg "ensure correct sudoers permissions"
+	echo "%bundle ALL=NOPASSWD: /bin/mount -o loop -t squashfs *" >> ${mountpoint}/etc/sudoers
+	echo "%bundle ALL=NOPASSWD: /bin/mount -o loop -t ext4 *" >> ${mountpoint}/etc/sudoers
+	echo "%bundle ALL=NOPASSWD: /bin/umount *" >> ${mountpoint}/etc/sudoers
+	chmod -v 0440 ${mountpoint}/etc/sudoers
+
+	msg "disable compositing"
+
+	echo "[Compositing]" >> ${mountpoint}/home/${user_name}/.kde4/share/config/kwinrc 
+	echo "Enabled=false" >> ${mountpoint}/home/${user_name}/.kde4/share/config/kwinrc 
+
+	msg "chown ${user_name} /home/${user_name}"
+	chroot ${mountpoint} /bin/chown -v ${user_name}:users /home/${user_name}
+	chroot ${mountpoint} /bin/chown -vR ${user_name}:users /home/${user_name}/Desktop
+	msg "chown ${user_name} /home/${user_name}/.*"
+	find ${mountpoint}/home/${user_name}/.[a-zA-Z0-9_]* | sed "s+${mountpoint}++g" > /tmp/chown.files
+	for i in $(cat /tmp/chown.files); do chroot ${mountpoint} /bin/chown -vR ${user_name}:users $i; done
+
+	msg "umount {proc,sys,dev}"
+	umount -v ${mountpoint}/proc ${mountpoint}/sys ${mountpoint}/dev 
+
+	msg_job_done
+}

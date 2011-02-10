@@ -1,0 +1,85 @@
+#!/bin/bash
+
+job_create_initrd()
+{
+    # initialize error handling
+    trap error_handler ERR
+
+    msg_job_start "job_create_initrd"
+
+    # check additional options
+    if [ -e "/tmp/tribe_initcpio_enable_usb" ] ; then
+    HWPARAMETER="$HWPARAMETER --usb"
+    fi
+
+    if [ -e "/tmp/tribe_initcpio_enable_firewire" ] ; then
+    HWPARAMETER="$HWPARAMETER --fw"
+    fi
+
+    if [ -e "/tmp/tribe_initcpio_enable_pcmcia" ] ; then
+    HWPARAMETER="$HWPARAMETER --pcmcia"
+    fi
+
+    if [ -e "/tmp/tribe_initcpio_enable_nfs" ] ; then
+    HWPARAMETER="$HWPARAMETER --nfs"
+    fi
+
+    if [ -e "/tmp/tribe_initcpio_enable_softwarreraid" ] ; then
+    HWPARAMETER="$HWPARAMETER --raid"
+    fi
+
+    if [ -e "/tmp/tribe_initcpio_enable_softwareraidmdp" ] ; then
+    HWPARAMETER="$HWPARAMETER --raid-partitions"
+    fi
+
+    if [ -e "/tmp/tribe_initcpio_enable_lvm2" ] ; then
+    HWPARAMETER="$HWPARAMETER --lvm2"
+    fi
+
+    if [ -e "/tmp/tribe_initcpio_enable_encrypted" ] ; then
+    HWPARAMETER="$HWPARAMETER --encrypt"
+    fi
+
+    # setup rc.conf and mkinitcpio.conf
+    msg "setup mkinitcpio.conf"
+    HWPARAMETER="$HWPARAMETER --keymap"
+    HWDETECTHOSTCONTROLLER=""
+    HWDETECTHOOKS=""
+    HWDETECTRC=""
+    HWDETECTHOSTCONTROLLER="$(hwdetect --hostcontroller $HWPARAMETER)"
+    HWDETECTHOOKS="$(hwdetect --hooks-dir=${mountpoint}/lib/initcpio/install --hooks $HWPARAMETER)"
+    HWDETECTRC="$(echo $(hwdetect --net --sound $HWPARAMETER)| sed -e 's#.*) ##g')"
+    [ -n "$HWDETECTHOSTCONTROLLER" ] && sed -i -e "s/^MODULES=.*/$HWDETECTHOSTCONTROLLER/g" ${mountpoint}/etc/mkinitcpio.conf
+    [ -n "$HWDETECTHOOKS" ] && sed -i -e "s/^HOOKS=.*/$HWDETECTHOOKS/g" ${mountpoint}/etc/mkinitcpio.conf
+    [ -n "$HWDETECTRC" ] && sed -i -e "s/^MODULES=.*/$HWDETECTRC/g" ${mountpoint}/etc/rc.conf
+    sed -i -e "s~filesystems~resume filesystems~g" ${mountpoint}/etc/mkinitcpio.conf
+
+    msg "mounting /proc, /sys and /dev"
+    mount -v -t proc none ${mountpoint}/proc
+    mount -v -t sysfs none ${mountpoint}/sys
+    mount -v -o bind /dev ${mountpoint}/dev
+
+    touch /tmp/tribe-mkinitcpio-running
+
+    echo ":: copying kernel to target ..." > /tmp/initramfs.log; echo >> /tmp/initramfs.log
+    cp -v /.livesys/medium/boot/vmlinuz26 ${mountpoint}/boot/vmlinuz26 > /tmp/initramfs.log; echo >> /tmp/initramfs.log
+
+    echo ":: starting initramfs creation..." > /tmp/initramfs.log; echo >> /tmp/initramfs.log
+
+    msg "creating initrd images"
+    chroot ${mountpoint} /sbin/mkinitcpio -p kernel26 >>/tmp/initramfs.log 2>&1
+    echo >> /tmp/initramfs.log
+
+    rm -f /tmp/tribe-mkinitcpio-running
+
+    msg "umounting /proc, /sys and /dev"
+    umount -v ${mountpoint}/proc ${mountpoint}/sys ${mountpoint}/dev
+
+    msg "creating loop devices"
+    for i in $(seq 8 255)
+    do
+         chroot ${mountpoint} /bin/bash -c "mknod -m0660 /dev/loop$i b 7 $i; chown root.disk /dev/loop$i;"
+    done
+
+    msg_job_done
+}

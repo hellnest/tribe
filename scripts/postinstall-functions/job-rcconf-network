@@ -1,0 +1,49 @@
+#!/bin/bash
+
+job_rcconf_network()
+{
+	# initialize error handling
+	trap error_handler ERR
+
+	msg_job_start "job_rcconf_network"
+
+	msg "add networkmanager settings"
+
+	# set devices to dhcp, needed for networkmanager
+	sed -i -e 's/^.*eth0=.*/eth0="dhcp"/' ${mountpoint}/etc/rc.conf
+
+	msg "set the hostname"
+	if [ "${hostname}" != "" ] ; then
+		msg "adding hostname: ${hostname}"
+		sed -i -e "s/^.*HOSTNAME=.*/HOSTNAME="\"${hostname}"\"/" ${mountpoint}/etc/rc.conf
+		msg "updating /etc/hosts"
+		sed -i -e 's/^[ \t]*127.0.0.1.*/127.0.0.1\tlocalhost.localdomain\tlocalhost\t'${hostname}'/' ${mountpoint}/etc/hosts
+	else
+		msg "adding hostname: chakra (no hostname specified)"
+		sed -i -e 's/^.*HOSTNAME=.*/HOSTNAME="chakra"/' ${mountpoint}/etc/rc.conf
+		msg "updating /etc/hosts"
+		sed -i -e 's/^[ \t]*127.0.0.1.*/127.0.0.1\tlocalhost.localdomain\tlocalhost\tchakra/' ${mountpoint}/etc/hosts
+	fi
+
+	msg "add interfaces"
+	sed -i -e 's/^.*INTERFACES=.*/INTERFACES=(!eth0 !eth1 !wlan0)/' ${mountpoint}/etc/rc.conf
+
+	# add networkmanagement or wicd to DAEMONS=
+	if [ -f "${mountpoint}/usr/bin/knetworkmanager" ];
+	then
+		msg "adding networkmanager daemons"
+		if [[ "`cat ${mountpoint}/etc/chakra-release`" > "0.3.49" ]] ; then
+		    sed -i -e 's/^.*DAEMONS=.*/DAEMONS=(syslog-ng dbus !network networkmanager avahi-daemon avahi-dnsconfd alsa cdemud kdm)/' ${mountpoint}/etc/rc.conf
+		else
+		    sed -i -e 's/^.*DAEMONS=.*/DAEMONS=(syslog-ng dbus hal !network networkmanager avahi-daemon avahi-dnsconfd alsa cdemud kdm)/' ${mountpoint}/etc/rc.conf
+		fi
+	else
+		msg "adding wicd daemons"
+		if [[ "`cat ${mountpoint}/etc/chakra-release`" > "0.3.49" ]] ; then
+		    sed -i -e 's/^.*DAEMONS=.*/DAEMONS=(syslog-ng dbus hal !network wicd avahi-daemon avahi-dnsconfd alsa cdemud kdm)/' ${mountpoint}/etc/rc.conf
+		else
+		    sed -i -e 's/^.*DAEMONS=.*/DAEMONS=(syslog-ng dbus hal !network wicd avahi-daemon avahi-dnsconfd alsa cdemud kdm)/' ${mountpoint}/etc/rc.conf
+		fi
+	fi
+	msg_job_done
+}

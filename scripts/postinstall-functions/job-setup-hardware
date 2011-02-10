@@ -1,0 +1,229 @@
+#!/bin/bash
+
+job_setup_hardware()
+{
+
+	msg_job_start "job_setup_hardware"
+
+	mount -v -t proc none ${mountpoint}/proc 
+	mount -v -t sysfs none ${mountpoint}/sys 
+	mount -v -o bind /dev ${mountpoint}/dev 
+	
+	# setup alsa volume levels
+	msg "setup alsa config"
+	if [ -e "/.livesys/write/etc/asound.state" ] ; then
+		cp -v -a -f /.livesys/write/etc/asound.state ${mountpoint}/etc/asound.state
+	fi
+
+	# alsa blacklist for the pc speaker
+	if [ -e "/.livesys/system/etc/modprobe.d/alsa_blacklist.conf" ] ; then
+		cp -v -a -f /.livesys/system/etc/modprobe.d/alsa_blacklist.conf ${mountpoint}/etc/modprobe.d/alsa_blacklist.conf
+	fi
+
+	# blacklist for broken realtek nics
+	if [ -e "/.livesys/write/etc/modprobe.d/realtek_blacklist.conf" ] ; then
+		cp -v -a -f /.livesys/write/etc/modprobe.d/realtek_blacklist.conf ${mountpoint}/etc/modprobe.d/realtek_blacklist.conf
+	fi
+
+# arg! this don't work yet
+#	# setup nouveau
+#	USED_DRIVER=`cat /etc/X11/xorg.conf | sed -n '/Section.*."Device"/,/EndSection/p' | grep -v "#" | grep Driver | cut -d '"' -f 2`
+#	if [ "${USED_DRIVER}" = "nouveau" ] ; then
+#		msg "setup nouveau drivers"
+#
+#		msg "removing unneeded packages"
+#		chroot ${mountpoint} /usr/bin/pacman -Rd libdrm --noconfirm
+#		chroot ${mountpoint} /usr/bin/pacman -Rd ati-dri --noconfirm
+#		chroot ${mountpoint} /usr/bin/pacman -Rd intel-dri --noconfirm
+#
+#		msg "installing driver"
+#		pacman -r ${mountpoint} -Udf ${PKG_OVERLAY}/xf86-video-nouveau* --noconfirm
+#		pacman -r ${mountpoint} -Udf ${PKG_OVERLAY}/nouveau-drm* --noconfirm
+#		pacman -r ${mountpoint} -Udf ${PKG_OVERLAY}/nouveau-libdrm* --noconfirm
+#
+#		# load the modules array from rc.conf
+#		msg "loading current modules from rc.conf"
+#		RCCONF_MODULES=`cat ${mountpoint}/etc/rc.conf | grep "MODULES=" | cut -d "(" -f 2 | cut -d ")" -f 1`
+#
+#		# add the detected modules to the original modules array
+#		msg "adding nouveau module to modules array"
+#		NEW_RCCONF_MODULES=`echo "MODULES=($RCCONF_MODULES nouveau)" | sed 's/  / /g'`
+#
+#		# and put that into rc.conf
+#		msg "writing new rc.conf"
+#		sed -i -e "s,MODULES=.*,$NEW_RCCONF_MODULES,g" ${mountpoint}/etc/rc.conf
+#		sleep 1
+#
+#		unset RCCONF_MODULES
+#		unset NEW_RCCONF_MODULES
+#	fi
+
+	# setup proprietary drivers, if detected
+	msg "setup proprietary drivers"
+	if [ -e "/tmp/nvidia" ] ; then
+		msg "nvidia detected"
+
+		msg "removing unneeded packages"
+		chroot ${mountpoint} /usr/bin/pacman -Rd ati-dri --noconfirm
+		chroot ${mountpoint} /usr/bin/pacman -Rd intel-dri --noconfirm
+		chroot ${mountpoint} /usr/bin/pacman -Rd libgl --noconfirm
+		msg "installing driver"
+		pacman -r ${mountpoint} -Udf ${PKG_OVERLAY}/nvidia-utils-${NVIDIA_DRV_VER}* --noconfirm
+		pacman -r ${mountpoint} -Udf ${PKG_OVERLAY}/nvidia-${NVIDIA_DRV_VER}* --noconfirm
+
+		# load the modules array from rc.conf
+		msg "loading current modules from rc.conf"
+		RCCONF_MODULES=`cat ${mountpoint}/etc/rc.conf | grep "MODULES=" | cut -d "(" -f 2 | cut -d ")" -f 1`
+
+		# add the detected modules to the original modules array
+		msg "adding nvidia module to modules array"
+		NEW_RCCONF_MODULES=`echo "MODULES=($RCCONF_MODULES nvidia)" | sed 's/  / /g'`
+
+		# and put that into rc.conf
+		msg "writing new rc.conf"
+		sed -i -e "s,MODULES=.*,$NEW_RCCONF_MODULES,g" ${mountpoint}/etc/rc.conf
+
+		unset RCCONF_MODULES
+		unset NEW_RCCONF_MODULES
+
+	elif [ -e "/tmp/nvidia-173xx" ] ; then
+		msg "nvidia-173xx detected"
+
+		msg "removing unneeded packages"
+		chroot ${mountpoint} /usr/bin/pacman -Rd ati-dri --noconfirm
+		chroot ${mountpoint} /usr/bin/pacman -Rd intel-dri --noconfirm
+		chroot ${mountpoint} /usr/bin/pacman -Rd libgl --noconfirm
+		msg "installing driver"
+		pacman -r ${mountpoint} -Udf ${PKG_OVERLAY}/nvidia-173xx* --noconfirm
+
+		# load the modules array from rc.conf
+		msg "loading current modules from rc.conf"
+		RCCONF_MODULES=`cat ${mountpoint}/etc/rc.conf | grep "MODULES=" | cut -d "(" -f 2 | cut -d ")" -f 1`
+
+		# add the detected modules to the original modules array
+		msg "adding nvidia module to modules array"
+		NEW_RCCONF_MODULES=`echo "MODULES=($RCCONF_MODULES nvidia)" | sed 's/  / /g'`
+
+		# and put that into rc.conf
+		msg "writing new rc.conf"
+		sed -i -e "s,MODULES=.*,$NEW_RCCONF_MODULES,g" ${mountpoint}/etc/rc.conf
+
+		unset RCCONF_MODULES
+		unset NEW_RCCONF_MODULES
+
+	elif [ -e "/tmp/nvidia-96xx" ] ; then
+		msg "nvidia-96xx detected"
+
+		msg "removing unneeded packages"
+		chroot ${mountpoint} /usr/bin/pacman -Rd ati-dri --noconfirm
+		chroot ${mountpoint} /usr/bin/pacman -Rd intel-dri --noconfirm
+		chroot ${mountpoint} /usr/bin/pacman -Rd libgl --noconfirm
+		msg "installing driver" 
+		pacman -r ${mountpoint} -Udf ${PKG_OVERLAY}/nvidia-96xx* --noconfirm
+
+		# load the modules array from rc.conf
+		msg "loading current modules from rc.conf"
+		RCCONF_MODULES=`cat ${mountpoint}/etc/rc.conf | grep "MODULES=" | cut -d "(" -f 2 | cut -d ")" -f 1`
+
+		# add the detected modules to the original modules array
+		msg "adding nvidia module to modules array"
+		NEW_RCCONF_MODULES=`echo "MODULES=($RCCONF_MODULES nvidia)" | sed 's/  / /g'`
+
+		# and put that into rc.conf
+		msg "writing new rc.conf"
+		sed -i -e "s,MODULES=.*,$NEW_RCCONF_MODULES,g" ${mountpoint}/etc/rc.conf
+
+		unset RCCONF_MODULES
+		unset NEW_RCCONF_MODULES
+
+	elif [ -e "/tmp/catalyst" ] ; then
+		msg "catalyst detected" 
+
+		msg "removing unneeded packages"
+		# remove conflicting packages
+		chroot ${mountpoint} /usr/bin/pacman -Rd ati-dri --noconfirm
+		chroot ${mountpoint} /usr/bin/pacman -Rd intel-dri --noconfirm
+		chroot ${mountpoint} /usr/bin/pacman -Rd libgl --noconfirm
+		chroot ${mountpoint} /usr/bin/pacman -Rd xf86-video-ati --noconfirm
+		chroot ${mountpoint} /usr/bin/pacman -Rd xf86-video-radeonhd --noconfirm
+
+		msg "installing driver"
+		# install driver
+		pacman -r ${mountpoint} -Udf ${PKG_OVERLAY}/catalyst* --noconfirm
+
+		# load the modules array from rc.conf
+		msg "loading current modules from rc.conf"
+		RCCONF_MODULES=`cat ${mountpoint}/etc/rc.conf | grep "MODULES=" | cut -d "(" -f 2 | cut -d ")" -f 1`
+
+		# add the detected modules to the original modules array
+		msg "adding catalyst fglrx module to modules array"
+		NEW_RCCONF_MODULES=`echo "MODULES=($RCCONF_MODULES fglrx)" | sed 's/  / /g'`
+
+		# and put that into rc.conf
+		msg "writing new rc.conf"
+		sed -i -e "s,MODULES=.*,$NEW_RCCONF_MODULES,g" ${mountpoint}/etc/rc.conf
+
+		unset RCCONF_MODULES
+		unset NEW_RCCONF_MODULES
+	fi
+
+	# add modules to rc.conf
+	msg "setup MODULES array in rc.conf"
+	MODULES_ARRAY=$(hwdetect --modules)
+	sed -i -e "s,MODULES=.*,$MODULES_ARRAY,g" ${mountpoint}/etc/rc.conf
+
+	# check if /opt/chakra/hooks has detected powersaving capabilities and loaded some modules.
+	# if thats the case, we add them to rc.conf too
+	#
+	# at first, collect some data
+	msg "adding powersave modules to MODULES array in rc.conf"
+	msg "collecting data"
+	KERNEL=$(cat /proc/version | cut -d " " -f 3)
+	AVAILABLE_CPU_DRIVERS=`pushd /lib/modules/"$KERNEL"/kernel/arch/x86/kernel/cpu/cpufreq/ >/dev/null 2>&1; ls -1 *.ko | cut -d "." -f 1 | sed 's/-/_/g'; popd >/dev/null 2>&1`
+	AVAILABLE_GOVERNORS=`pushd /lib/modules/"$KERNEL"/kernel/drivers/cpufreq/ >/dev/null 2>&1; ls -1 *.ko | cut -d "." -f 1 | sed 's/-/_/g'; popd >/dev/null 2>&1`
+
+	# put all available drivers/governors and loaded modules into some variables
+	LOADED_MODULES=`lsmod | awk '{print $1}'`
+	AVAILABLE_DRIVERS="$AVAILABLE_CPU_DRIVERS $AVAILABLE_GOVERNORS"
+
+	msg "kernel = $KERNEL"
+	msg "loaded powersave modules = $LOADED_MODULES"
+	msg "available powersave modules = $AVAILABLE_DRIVERS"
+
+	# put the available drivers/governors into a temporary file
+	if [ -e "/tmp/cpu_drivers" ] ; then
+		rm -rf /tmp/cpu_drivers >/dev/null 2>&1
+	fi
+	echo $AVAILABLE_DRIVERS > /tmp/cpu_drivers
+
+	# initialize var for detected drivers
+	DETECTED_DRIVERS=''
+
+	# now compare the available stuff with the loaded stuff and put all matches into $DETECTED DRIVERS
+	msg "detecting loaded modules"
+	for module in ${LOADED_MODULES}; do
+		if [ "$(grep ${module} /tmp/cpu_drivers)" ]; then
+			DETECTED_DRIVERS="$DETECTED_DRIVERS $module"
+		fi
+	done
+
+	# load the modules array from rc.conf
+	msg "loading current modules from rc.conf"
+	RCCONF_MODULES=`cat ${mountpoint}/etc/rc.conf | grep "MODULES=" | cut -d "(" -f 2 | cut -d ")" -f 1`
+
+	# add the detected modules to the original modules array
+	msg "adding detected powersave modules to modules array"
+	NEW_RCCONF_MODULES=`echo "MODULES=($RCCONF_MODULES $DETECTED_DRIVERS)" | sed 's/  / /g'`
+
+	# and put that into rc.conf
+	msg "writing new rc.conf"
+	sed -i -e "s,MODULES=.*,$NEW_RCCONF_MODULES,g" ${mountpoint}/etc/rc.conf
+
+	unset RCCONF_MODULES
+	unset NEW_RCCONF_MODULES
+	
+	msg "umounting /proc, /sys and /dev"
+	umount -v ${mountpoint}/proc ${mountpoint}/sys ${mountpoint}/dev 
+
+	msg_job_done
+}

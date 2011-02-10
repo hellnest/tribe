@@ -1,0 +1,34 @@
+#!/bin/bash
+
+job_download_doc()
+{
+	msg_job_start "job_download_doc"
+
+	mount -v -t proc none ${mountpoint}/proc 
+	mount -v -t sysfs none ${mountpoint}/sys 
+	mount -v -o bind /dev ${mountpoint}/dev 
+	
+	if [ "$download_doc" = "yes" ] ; then
+
+		if [ "${ping_check}" != "" ] ; then
+
+			
+			chroot ${mountpoint} /usr/bin/pacman -Syf kde-doc --noconfirm
+
+		else
+
+			msg "no internet connection available. skipping"
+
+		fi
+
+	else
+
+		msg "doc download disabled"
+
+	fi
+
+	msg "umounting /proc, /sys and /dev"
+	umount -v ${mountpoint}/proc ${mountpoint}/sys ${mountpoint}/dev 
+	
+	msg_job_done
+}

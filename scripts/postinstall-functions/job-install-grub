@@ -1,0 +1,36 @@
+#!/bin/bash
+
+job_install_grub()
+{
+	# initialize error handling
+	trap error_handler ERR
+
+	msg_job_start "job_install_grub"
+
+	msg "converting ${grub_device} to a valid device"
+	# cut ${grub_device}
+	grub_device=`echo ${grub_device} | cut -c3`
+
+	x=0
+	for letter in {a..z} ; do
+	      if [ "${grub_device}" = "${letter}" ] ; then
+		grub_device=$x
+	      fi
+	      x=$((x+1))
+	done
+
+	msg "installing grub"
+	echo "GRUB_DEBUG___ >>>> mountpoint: ${mountpoint}"
+
+	cp -avf ${mountpoint}/usr/lib/grub/i386-pc/* ${mountpoint}/boot/grub/
+
+	echo "GRUB_DEBUG___ >>>> grub_device: ${grub_device}"
+	echo "GRUB_DEBUG___ >>>> grub_part: ${grub_partition}"
+
+	${mountpoint}/sbin/grub --no-floppy --batch >/tmp/grub.log 2>&1 <<EOF
+root (hd${grub_device},${grub_partition})
+setup (hd${grub_device})
+quit
+EOF
+	msg_job_done
+}

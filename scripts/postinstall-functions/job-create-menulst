@@ -1,0 +1,113 @@
+#!/bin/bash
+
+job_create_menulst()
+{
+	# initialize error handling
+	trap error_handler ERR
+
+	msg_job_start "job_create_menulst"
+
+	msg "converting ${grub_device} to a valid device"
+	# cut ${grub_device}
+	grub_device=`echo ${grub_device} | cut -c3`
+
+	x=0
+	for letter in {a..z} ; do
+	      if [ "${grub_device}" = "${letter}" ] ; then
+		grub_device=$x
+	      fi
+	      x=$((x+1))
+	done
+    
+	msg "create /boot/grub"
+	mkdir -p ${mountpoint}/boot/grub
+
+	msg "copying menu.lst from livesystem to target"
+	cp -v -f /etc/skel/menu.lst ${mountpoint}/boot/grub
+
+	msg "cleaning target menu.lst at first"
+	cat ${mountpoint}/boot/grub/menu.lst | grep -v title | grep -v root | grep -v kernel | grep -v initrd | grep -v map | grep -v chainloader | grep -v makeactive | grep -v splashimage | grep -v Chakra >> ${mountpoint}/boot/grub/menu.lst.new
+
+	msg "starting menu.lst config"
+
+	if [ "${use_swap}" = "yes" ] ; then
+
+	msg "we are using swap partition"
+
+		_sdevice=`echo /dev/${target_swap}`
+		_suuid=`blkid "${_sdevice}" -s UUID -o value`
+	fi
+
+	if [ "${use_boot}" = "yes" ] ; then
+		msg "we are using a separate /boot partition"
+	else
+		msg "we are not using a separate /boot partition"
+		_boot="/boot"
+	fi
+
+	_device=`echo /dev/${target_root}`
+	_uuid=`blkid "${_device}" -s UUID -o value`
+
+	# add options
+	echo " " >>${mountpoint}/boot/grub/menu.lst.new
+	echo "hiddenmenu" >>${mountpoint}/boot/grub/menu.lst.new
+	echo "default 0" >>${mountpoint}/boot/grub/menu.lst.new
+	echo "timeout 1" >>${mountpoint}/boot/grub/menu.lst.new
+		
+	# standard startup entry
+	msg "adding standard entry"
+	echo " " >>${mountpoint}/boot/grub/menu.lst.new
+	echo "# (0) Chakra GNU/Linux" >>${mountpoint}/boot/grub/menu.lst.new
+	echo "title Chakra GNU/Linux" >>${mountpoint}/boot/grub/menu.lst.new
+
+	echo "root (hd${grub_device},${grub_partition})" >>${mountpoint}/boot/grub/menu.lst.new
+	if [ "${use_swap}" = "yes" ] ; then
+		echo "kernel ${_boot}/vmlinuz26 resume=/dev/disk/by-uuid/${_suuid} root=/dev/disk/by-uuid/${_uuid} ro" >>${mountpoint}/boot/grub/menu.lst.new
+	else
+		echo "kernel ${_boot}/vmlinuz26 root=/dev/disk/by-uuid/${_uuid} ro" >>${mountpoint}/boot/grub/menu.lst.new
+	fi
+	echo "initrd ${_boot}/kernel26.img" >>${mountpoint}/boot/grub/menu.lst.new
+
+	# fallback startup entry
+	msg "adding fallback entry"
+	echo " " >>${mountpoint}/boot/grub/menu.lst.new
+	echo "# (1) Chakra GNU/Linux Fallback" >>${mountpoint}/boot/grub/menu.lst.new
+	echo "title Chakra GNU/Linux Fallback" >>${mountpoint}/boot/grub/menu.lst.new
+
+	echo "root (hd${grub_device},${grub_partition})" >>${mountpoint}/boot/grub/menu.lst.new
+	if [ "${use_swap}" = "yes" ] ; then
+		echo "kernel ${_boot}/vmlinuz26 resume=/dev/disk/by-uuid/${_suuid} root=/dev/disk/by-uuid/${_uuid} ro" >>${mountpoint}/boot/grub/menu.lst.new
+	else
+		echo "kernel ${_boot}/vmlinuz26 root=/dev/disk/by-uuid/${_uuid} ro" >>${mountpoint}/boot/grub/menu.lst.new
+	fi
+	echo "initrd ${_boot}/kernel26-fallback.img" >>${mountpoint}/boot/grub/menu.lst.new
+
+	# install new menu.lst
+	msg "installing menu.lst to target"
+	rm -rf ${mountpoint}/boot/grub/menu.lst
+	mv ${mountpoint}/boot/grub/menu.lst.new ${mountpoint}/boot/grub/menu.lst
+
+	unset _uuid
+	unset _device
+
+	msg "copy installation logs to target /var/log"
+
+        # fix no device.map bug
+        echo > ${mountpoint}/boot/grub/device.map
+
+	# last thing to do: copy installation logs to target
+
+	if [ -e "/tmp/installation.log" ] ; then
+		cp -v -f /tmp/installation.log ${mountpoint}/var/log/installation.log
+	fi
+
+	if [ -e "/tmp/initramfs.log" ] ; then
+		cp -v -f /tmp/initramfs.log ${mountpoint}/var/log/installation-initramfs.log
+	fi
+
+	if [ -e "/tmp/grub.log" ] ; then
+		cp -v -f /tmp/grub.log ${mountpoint}/var/log/installation-grub.log
+	fi
+
+	msg_job_done
+}
