@@ -456,35 +456,23 @@ void PartitionPage::createWidget()
     m_ui->advancedButton->setEnabled(false);
     connect(m_ui->advancedButton, SIGNAL(clicked(bool)), this, SLOT(advancedClicked()));
 
-    m_ui->newPartTableButton->setIcon(KIcon("insert-table"));
-    m_ui->newPartTableButton->setEnabled(false);
-    connect(m_ui->newPartTableButton, SIGNAL(clicked(bool)), this, SLOT(newPartTableClicked()));
-    
-    m_ui->newButton->setIcon(KIcon("list-add"));
-    m_ui->newButton->setEnabled(false);
-    connect(m_ui->newButton, SIGNAL(clicked(bool)), this, SLOT(newClicked()));
-
-    m_ui->deleteButton->setIcon(KIcon("list-remove"));
-    m_ui->deleteButton->setEnabled(false);
-    connect(m_ui->deleteButton, SIGNAL(clicked(bool)), this, SLOT(deleteClicked()));
-
     m_ui->formatButton->setIcon(KIcon("draw-eraser"));
     m_ui->formatButton->setEnabled(false);
     m_ui->formatButton->setCheckable(true);
     connect(m_ui->formatButton, SIGNAL(toggled(bool)), this, SLOT(formatToggled(bool)));
+    
+    m_ui->refreshButton->setIcon(KIcon("view-refresh"));
+    m_ui->refreshButton->setEnabled(true);
+    connect(m_ui->refreshButton, SIGNAL(clicked(bool)), this, SLOT(refreshClicked()));
 
     m_ui->undoButton->setIcon(KIcon("edit-undo"));
     m_ui->undoButton->setEnabled(PMHandler::instance()->operationStack().operations().size() > 0);
     connect(m_ui->undoButton, SIGNAL(clicked(bool)), this, SLOT(undoClicked()));
+    m_ui->undoButton->setVisible(false);
 
     m_ui->unmountButton->setIcon(KIcon("object-unlocked"));
     m_ui->unmountButton->setVisible(false);
     connect(m_ui->unmountButton, SIGNAL(clicked(bool)), this, SLOT(unmountClicked()));
-
-    connect(m_ui->sizeSlider, SIGNAL(valueChanged(int)), m_ui->sizeSpinBox, SLOT(setValue(int)));
-    connect(m_ui->sizeSpinBox, SIGNAL(valueChanged(int)), m_ui->sizeSlider, SLOT(setValue(int)));
-
-    connect(m_ui->typeBox, SIGNAL(currentIndexChanged(QString)), this, SLOT(slotTypeChanged(QString)));
 
     m_ui->treeWidget->setItemDelegate(new PartitionDelegate);
     m_ui->treeWidget->setSelectionMode(QAbstractItemView::SingleSelection);
@@ -519,35 +507,10 @@ void PartitionPage::createWidget()
     PMHandler::instance()->reload();
 }
 
-void PartitionPage::newPartTableClicked()
-{
-    int ret;
-
-    if (m_ui->treeWidget->currentItem()->childCount() > 0) {
-        ret = KMessageBox::questionYesNo(0, i18n("The selected volume already has a partition table.. Overwrite it? (this will destroy all data on the device)"), i18n("Warning"));
-        if (ret == KMessageBox::Yes) {
-            QProcess p;
-            p.start("parted -s " + m_ui->treeWidget->currentItem()->data(0, 52).toString() + " mktable msdos");
-            p.waitForFinished();
-        }
-    } else {
-        ret = KMessageBox::questionYesNo(0, i18n("This operation will destroy all data on the selected volume.. Continue anyway?"), i18n("Warning"));
-        if (ret == KMessageBox::Yes) {
-            QProcess p;
-            p.start("parted -s " + m_ui->treeWidget->currentItem()->data(0, 52).toString() + " mktable msdos");
-            p.waitForFinished();
-        }
-    }
-
-    PMHandler::instance()->reload();
-}
-
 void PartitionPage::advancedClicked()
 {
-    QProcess p;
-    p.start("partitionmanager");
-    p.waitForFinished();
-    populateTreeWidget();
+    QProcess::execute("partitionmanager");
+    PMHandler::instance()->reload();
 }
 
 void PartitionPage::setVisibleParts(bool b)
@@ -557,15 +520,6 @@ void PartitionPage::setVisibleParts(bool b)
     m_ui->lowLine->setVisible(b);
     m_ui->filesystemLabel->setVisible(b);
     m_ui->filesystemBox->setVisible(b);
-    m_ui->typeLabel->setVisible(b);
-    m_ui->typeBox->setVisible(b);
-    m_ui->sizeSlider->setVisible(b);
-    m_ui->sizeSpinBox->setVisible(b);
-
-    if (m_ui->typeBox->currentText() == i18n("Extended")) {
-        m_ui->filesystemLabel->setVisible(false);
-        m_ui->filesystemBox->setVisible(false);
-    }
 }
 
 void PartitionPage::populateTreeWidget()
@@ -613,9 +567,6 @@ void PartitionPage::populateTreeWidget()
     currentItemChanged(0, 0);
 
     m_ui->treeWidget->setEnabled(true);
-    m_ui->deleteButton->setVisible(true);
-    m_ui->newButton->setVisible(true);
-    m_ui->newPartTableButton->setVisible(true);
     m_ui->formatButton->setVisible(true);
 
     QTreeWidgetItemIterator it(m_ui->treeWidget);
@@ -640,9 +591,6 @@ void PartitionPage::populateTreeWidget()
 void PartitionPage::currentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem* )
 {
     if (!current) {
-        m_ui->deleteButton->setEnabled(false);
-        m_ui->newButton->setEnabled(false);
-        m_ui->newPartTableButton->setEnabled(false);
         m_ui->formatButton->setEnabled(false);
         m_ui->unmountButton->setVisible(false);
         enableNextButton(false);
@@ -653,19 +601,13 @@ void PartitionPage::currentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem
     if (partition != 0) {
         m_ui->unmountButton->setVisible(partition->isMounted());
         m_ui->unmountButton->setEnabled(partition->canUnmount());
-        m_ui->deleteButton->setEnabled(DeleteOperation::canDelete(partition));
-        m_ui->newButton->setEnabled(NewOperation::canCreateNew(partition));
         m_ui->formatButton->setEnabled(DeleteOperation::canDelete(partition));
         disconnect(m_ui->formatButton, SIGNAL(toggled(bool)), this, SLOT(formatToggled(bool)));
         m_ui->formatButton->setChecked(m_toFormat.contains(partition));
         connect(m_ui->formatButton, SIGNAL(toggled(bool)), this, SLOT(formatToggled(bool)));
-        m_ui->newPartTableButton->setEnabled(false);
     } else {
         m_ui->unmountButton->setVisible(false);
-        m_ui->deleteButton->setEnabled(false);
-        m_ui->newButton->setEnabled(false);
         m_ui->formatButton->setEnabled(false);
-        m_ui->newPartTableButton->setEnabled(true);
     }
 
     QTreeWidgetItemIterator it(m_ui->treeWidget);
@@ -729,10 +671,6 @@ void PartitionPage::formatToggled(bool status)
     m_ui->advancedButton->setEnabled(false);
     if (status) {
         setVisibleParts(true);
-        m_ui->sizeSlider->setVisible(false);
-        m_ui->sizeSpinBox->setVisible(false);
-        m_ui->typeBox->setVisible(false);
-        m_ui->typeLabel->setVisible(false);
         m_ui->filesystemLabel->setVisible(true);
         m_ui->filesystemBox->setVisible(true);
     } else {
@@ -780,104 +718,10 @@ void PartitionPage::cancelFormat()
     m_ui->advancedButton->setEnabled(true);
 }
 
-void PartitionPage::deleteClicked()
+void PartitionPage::refreshClicked()
 {
-    const Partition *partition = m_ui->treeWidget->selectedItems().first()->data(0, PARTITION_ROLE).value<const Partition*>();
-    Device *device = m_ui->treeWidget->selectedItems().first()->data(0, DEVICE_ROLE).value<Device*>();
-    // Delete the partition
-    Partition *p = device->partitionTable()->findPartitionBySector(partition->firstSector(), PartitionRole(PartitionRole::Any));
-
-    PMHandler::instance()->operationStack().push(new DeleteOperation(*device, p));
-
-    populateTreeWidget();
-}
-
-void PartitionPage::newClicked()
-{
-    m_ui->typeBox->clear();
-
-    const Partition *partition = m_ui->treeWidget->selectedItems().first()->data(0, PARTITION_ROLE).value<const Partition*>();
-
-    m_ui->typeBox->addItem(i18n("Extended"), (int)PartitionRole::Extended);
-    m_ui->typeBox->addItem(i18n("Primary"), (int)PartitionRole::Primary);
-
-    QString selected = FileSystem::nameForType(FileSystem::Ext4);
-    m_ui->filesystemBox->setCurrentIndex(m_ui->filesystemBox->findText(selected));
-
-    setVisibleParts(true);
-
-    m_newPartition = NewOperation::createNew(*partition);
-
-    qint64 minSize = qMax(m_newPartition->sectorsUsed(), m_newPartition->minimumSectors()) * m_newPartition->sectorSize();
-    qint64 maxSize = qMin(m_newPartition->length(), m_newPartition->maximumSectors()) * m_newPartition->sectorSize();
-
-    m_ui->sizeSpinBox->setRange(Capacity(minSize).toInt(Capacity::MiB), Capacity(maxSize).toInt(Capacity::MiB));
-
-    m_ui->sizeSlider->setRange(Capacity(minSize).toInt(Capacity::MiB), Capacity(maxSize).toInt(Capacity::MiB));
-    m_ui->sizeSlider->setValue(Capacity(maxSize).toInt(Capacity::MiB));
-
-    connect(m_ui->treeWidget, SIGNAL(itemSelectionChanged()), this, SLOT(cancelNew()));
-
-    connect(m_ui->editPartitionCancelButton, SIGNAL(clicked(bool)), this, SLOT(cancelNew()));
-    connect(m_ui->editPartitionOkButton, SIGNAL(clicked(bool)), this, SLOT(applyNew()));
-}
-
-void PartitionPage::applyNew()
-{
-    disconnect(m_ui->treeWidget, SIGNAL(itemSelectionChanged()), this, SLOT(cancelNew()));
-
-    disconnect(m_ui->editPartitionCancelButton, SIGNAL(clicked(bool)), this, SLOT(cancelNew()));
-    disconnect(m_ui->editPartitionOkButton, SIGNAL(clicked(bool)), this, SLOT(applyNew()));
-
-    const Partition *partition = m_ui->treeWidget->selectedItems().first()->data(0, PARTITION_ROLE).value<const Partition*>();
-    Device *device = m_ui->treeWidget->selectedItems().first()->data(0, DEVICE_ROLE).value<Device*>();
-
-    qint64 lastSector = (m_newPartition->lastSector() - m_newPartition->firstSector()) / m_ui->sizeSpinBox->maximum();
-    lastSector *= m_ui->sizeSpinBox->value();
-    lastSector += m_newPartition->firstSector();
-    m_newPartition->deleteFileSystem();
-    m_newPartition->setLastSector(lastSector);
-
-    FileSystem::Type filesystem;
-    if (m_ui->typeBox->count() > 0) {
-        QString type = m_ui->typeBox->currentText();
-        if (type == "Extended") {
-            m_newPartition->setRoles(PartitionRole(PartitionRole::Extended));
-            filesystem = FileSystem::Extended;
-        } else {
-            m_newPartition->setRoles(PartitionRole(PartitionRole::Primary));
-            filesystem = FileSystem::typeForName(m_ui->filesystemBox->currentText());
-        }
-    } else {
-        PartitionRole::Roles roles = device->partitionTable()->childRoles(*partition);
-        if (roles & PartitionRole::Logical) {
-            m_newPartition->setRoles(PartitionRole(PartitionRole::Logical));
-        } else {
-            m_newPartition->setRoles(PartitionRole(PartitionRole::Primary));
-        }
-        filesystem = FileSystem::typeForName(m_ui->filesystemBox->currentText());
-    }
-
-    m_newPartition->setFileSystem(FileSystemFactory::create(filesystem,
-                                                            m_newPartition->firstSector(),
-                                                            m_newPartition->lastSector()));
-
-    PMHandler::instance()->operationStack().push(new NewOperation(*device, m_newPartition));
-
-    setVisibleParts(false);
-
-    populateTreeWidget();
-}
-
-void PartitionPage::cancelNew()
-{
-    disconnect(m_ui->treeWidget, SIGNAL(itemSelectionChanged()), this, SLOT(cancelNew()));
-    disconnect(m_ui->editPartitionCancelButton, SIGNAL(clicked(bool)), this, SLOT(cancelNew()));
-    disconnect(m_ui->editPartitionOkButton, SIGNAL(clicked(bool)), this, SLOT(applyNew()));
-
-    delete m_newPartition;
-
-    setVisibleParts(false);
+    connect(PMHandler::instance(), SIGNAL(devicesReady()), this, SLOT(populateTreeWidget()));
+    PMHandler::instance()->reload();
 }
 
 void PartitionPage::undoClicked()
@@ -941,13 +785,45 @@ QTreeWidgetItem* PartitionPage::createItem(const Partition* p, Device *dev)
 void PartitionPage::aboutToGoToNext()
 {
     bool foundRoot = false;
+    bool unmount = false;
+
     QTreeWidgetItemIterator it(m_ui->treeWidget);
     while (*it) {
         QString text = (*it)->data(0, MOUNTPOINT_ROLE).toString();
 
         if (text.startsWith('/')) {
             const Partition *partition = (*it)->data(0, PARTITION_ROLE).value<const Partition*>();
-            Device *device = m_ui->treeWidget->selectedItems().first()->data(0, DEVICE_ROLE).value<Device*>();
+            Device *device = (*it)->data(0, DEVICE_ROLE).value<Device*>();
+
+            if (partition->isMounted() && unmount == false) {
+                KDialog *dialog = new KDialog(this, Qt::FramelessWindowHint);
+                bool retbool = true;
+                dialog->setButtons(KDialog::Yes | KDialog::No);
+
+                if (KMessageBox::createKMessageBox(dialog, KIcon("dialog-warning"), i18n("Tribe detected target partitions which are mounted. Do you want Tribe to unmount them?"), QStringList(),
+                                   QString(), &retbool, KMessageBox::Notify) == KDialog::No) {
+                    PMHandler::instance()->clearMountList();
+                    return;
+                } else {
+                    unmount = true;
+                }
+            }
+            if (partition->isMounted() && unmount == true) {
+                Partition *p = device->partitionTable()->findPartitionBySector(partition->firstSector(), PartitionRole(PartitionRole::Any));
+
+                Report *rep = new Report(0);
+                p->unmount(*rep);
+                rep->deleteLater();
+
+                if (partition->isMounted()) {
+                    KMessageBox::error(this, i18n("Tribe failed to unmount a partition which is target for the installation. "
+                                                  "You need to unmount the partitions manually before you can proceed."),
+                                        i18n("Target partitions mounted"));
+
+                    PMHandler::instance()->clearMountList();
+                    return;
+                }
+            }
 
             // If '/' is being considered, check target capacity.
             if (text == "/") {

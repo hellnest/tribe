@@ -380,13 +380,6 @@
   </Point>
 </Placemark>
 <Placemark>
-  <name>Calcutta</name>
-  <description>Asia/Calcutta</description>
-  <Point>
-    <coordinates>88.3639,22.5726</coordinates>
-  </Point>
-</Placemark>
-<Placemark>
   <name>Colombo</name>
   <description>Asia/Colombo</description>
   <Point>
@@ -454,6 +447,13 @@
   <description>Asia/Kathmandu</description>
   <Point>
     <coordinates>85.3182,27.7029</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>Kolkata</name>
+  <description>Asia/Kolkata</description>
+  <Point>
+    <coordinates>88.3639,22.5726</coordinates>
   </Point>
 </Placemark>
 <Placemark>

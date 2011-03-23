@@ -63,111 +63,67 @@ void ConfigPage::createWidget()
 
     ui.changeAppearanceButton->setVisible(false);
 
-    // page connections
-    connect(ui.installPkgzButton, SIGNAL(clicked()), this, SLOT(setInstallPkgzPage()));
+    // page connections    
     connect(ui.downloadBundlesButton, SIGNAL(clicked()), this, SLOT(setDownloadBundlesPage()));
     connect(ui.changeAppearanceButton, SIGNAL(clicked()), this, SLOT(setChangeAppearancePage()));
     connect(ui.initRamDiskButton, SIGNAL(clicked()), this, SLOT(setInitRamdiskPage()));
     connect(ui.bootloaderSettingsButton, SIGNAL(clicked()), this, SLOT(setBootloaderPage()));
     connect(ui.cancelButton, SIGNAL(clicked()), this, SLOT(cancelButtonClicked()));
-    // pkg installer
-    connect(ui.pkgList, SIGNAL(currentRowChanged(int)), this, SLOT(currentPkgItemChanged(int)));
-    connect(ui.pkgInstallButton, SIGNAL(clicked()), this, SLOT(pkgInstallButtonClicked()));
-    ui.pkgScreenLabel->installEventFilter(this);
-    ui.screenshotLabel->installEventFilter(this);
     // bundle download
     connect(ui.bundlesDownloadButton, SIGNAL(clicked()), this, SLOT(bundlesDownloadButtonClicked()));
     // generate initrd
     connect(ui.generateInitRamDiskButton, SIGNAL(clicked()), this, SLOT(generateInitRamDisk()));
 
     // page icons
-    ui.installPkgzButton->setIcon(KIcon("repository"));
     ui.downloadBundlesButton->setIcon(KIcon("x-cb-bundle"));
     ui.changeAppearanceButton->setIcon(KIcon("preferences-desktop-color"));
     ui.initRamDiskButton->setIcon(KIcon("cpu"));
     ui.bootloaderSettingsButton->setIcon(KIcon("go-first"));
     ui.cancelButton->setIcon(KIcon("dialog-cancel"));
-    // pkg installer
-    ui.pkgInstallButton->setIcon(KIcon("run-build-install"));
     // bundle download
     ui.bundlesDownloadButton->setIcon(KIcon("download"));
     // generate initrd
     ui.generateInitRamDiskButton->setIcon(KIcon("debug-run"));
 
     // remove the initrd tmp files
-    QProcess::execute("bash -c \"rm " + tmpInitRd.join(" ") + " > /dev/null 2&>1\"");
+    QProcess::execute("bash -c \"rm " + tmpInitRd.join(" ") + " > /dev/null 2>&1\"");
 
     // first call to check internet connection
     connect(&networkManager, SIGNAL(finished(QNetworkReply*)),
              this, SLOT(handleNetworkData(QNetworkReply*)));
     networkManager.get(QNetworkRequest(QString("http://chakra-project.org")));
+    
+    // check installed kde version
+    QProcess proc;
+    proc.start("pacman -Qi kde-common --noconfirm");
+    proc.waitForFinished();
 
-    populatePkgzList();
+    QList<QByteArray> pacmanLines = proc.readAllStandardOutput().split('\n');
+    QList<QByteArray> versionLine(pacmanLines[1].split(':'));
+    QList<QByteArray> versionString(versionLine[1].split('-'));
+
+    QString pkgver(versionString[0].trimmed());
+    QString pkgrel(versionString[1].trimmed());
+    qDebug() << "KDE pkgver:" << pkgver << "pkgrel:" << pkgrel;
+
+    // check remote kde version
+    proc.start("pacman -Si kde-common --noconfirm");
+    proc.waitForFinished();
+
+    pacmanLines = proc.readAllStandardOutput().split('\n');
+    versionLine = pacmanLines[2].split(':');
+    versionString = versionLine[1].split('-');
+
+    QString remote_pkgver(versionString[0].trimmed());
+    QString remote_pkgrel(versionString[1].trimmed());
+    qDebug() << "KDE remote_pkgver:" << remote_pkgver << "remote_pkgrel:" << remote_pkgrel;
+    
+    // disable download if no match
+    //if (pkgver != remote_pkgver)
+    //  ui.bundlesDownloadButton->setEnabled(false);
+
+    // populate BundlesList
     populateBundlesList();
-}
-
-bool ConfigPage::eventFilter(QObject* obj, QEvent* event)
-{
-    if (event->type() == QEvent::MouseButtonRelease) {
-        if (obj == ui.pkgScreenLabel) {
-            ui.stackedWidget->setCurrentIndex(5);
-            m_currentPage = 5;
-        } else if (obj == ui.screenshotLabel) {
-            ui.stackedWidget->setCurrentIndex(2);
-            m_currentPage = 2;
-        }
-    }
-
-    return 0;
-}
-
-void ConfigPage::switchPkgScreenshot()
-{
-    if (ui.stackedWidget->currentIndex() == 5) {
-        ui.stackedWidget->setCurrentIndex(2);
-        m_currentPage = 2;
-    } else if (ui.stackedWidget->currentIndex() == 2) {
-        ui.stackedWidget->setCurrentIndex(5);
-        m_currentPage = 5;
-    }
-}
-
-void ConfigPage::populatePkgzList()
-{
-    ui.pkgList->clear();
-
-    QFile pkglistFile(QString(CONFIG_INSTALL_PATH) + "/configPagePkgData");
-
-    if (pkglistFile.open(QIODevice::ReadOnly)) {
-        m_incomingList = QString(pkglistFile.readAll()).trimmed().split("\n");
-    } else {
-        qDebug() << pkglistFile.errorString();
-    }
-
-    if (m_incomingList.isEmpty())
-        return;
-
-    foreach (QString pkg, m_incomingList) {
-        QListWidgetItem *item = new QListWidgetItem(ui.pkgList);
-        item->setSizeHint(QSize(0, 22));
-        item->setText(pkg.split("::").at(1));
-        item->setData(60, pkg.split("::").at(0));
-        item->setData(61, pkg.split("::").at(2));
-        item->setIcon(QIcon(QString(CONFIG_INSTALL_PATH) + "/" + item->data(60).toString() + ".png"));
-        item->setCheckState(Qt::Unchecked);
-        ui.pkgList->addItem(item);
-        m_incomingList.append(pkg.split("::").at(0) + "_thumb");
-        m_incomingList.append(pkg.split("::").at(0));
-    }
-
-    m_incomingIncr = 0;
-    m_incomingExtension = ".jpeg";
-
-    KUrl r(QUrl("http://chakra-project.org/packages/screenshots/" + 
-                m_incomingList.at(m_incomingIncr) + m_incomingExtension));
-    m_job = KIO::get(r, KIO::Reload, KIO::Overwrite | KIO::HideProgressInfo);
-    connect(m_job, SIGNAL(data(KIO::Job*,QByteArray)), this, SLOT(incomingData(KIO::Job*, QByteArray)));
-    connect(m_job, SIGNAL(result(KJob*)), this, SLOT(result(KJob*)));
 }
 
 void ConfigPage::incomingData(KIO::Job* job, QByteArray data)
@@ -210,8 +166,8 @@ void ConfigPage::result(KJob* job)
         m_incomingIncr = 0;
         m_incomingList.clear();
         if (m_incomingExtension != ".jpeg")
-            ui.stackedWidget->setCurrentIndex(3);
-            m_currentPage = 3;
+            ui.stackedWidget->setCurrentIndex(2);
+            m_currentPage = 2;
             ui.bundlesDownloadButton->setEnabled(true);
             enableNextButton(true);
         m_incomingExtension = "";
@@ -222,7 +178,6 @@ void ConfigPage::result(KJob* job)
         qDebug() << ">> m_job error " + job->errorString();
         ui.stackedWidget->setCurrentIndex(m_currentPage);
         ui.bundlesDownloadButton->setEnabled(true);
-        ui.installPkgzButton->setEnabled(true);
         enableNextButton(true);
         return;
     }
@@ -278,7 +233,6 @@ void ConfigPage::cancelButtonClicked()
     connect(m_process, SIGNAL(finished(int)), this, SLOT(processComplete()));
 
     ui.bundlesDownloadButton->setEnabled(true);
-    ui.installPkgzButton->setEnabled(true);
     enableNextButton(true);
     ui.stackedWidget->setCurrentIndex(m_currentPage);
 }
@@ -321,7 +275,7 @@ void ConfigPage::bundlesDownloadButtonClicked()
 
     ui.bundlesDownloadButton->setEnabled(false);
     enableNextButton(false);
-    ui.stackedWidget->setCurrentIndex(7);
+    ui.stackedWidget->setCurrentIndex(5);
     ui.progressBar->setValue(0);
     ui.progressLabel->setText("Waiting for server...");
 
@@ -379,98 +333,6 @@ void ConfigPage::bundlesDownloadButtonClicked()
     m_job = KIO::get(r, KIO::Reload, KIO::Overwrite | KIO::HideProgressInfo);
     connect(m_job, SIGNAL(data(KIO::Job*,QByteArray)), this, SLOT(incomingData(KIO::Job*, QByteArray)));
     connect(m_job, SIGNAL(result(KJob*)), this, SLOT(result(KJob*)));
-}
-
-void ConfigPage::currentPkgItemChanged(int i)
-{
-    // pkg name
-    ui.pkgNameLabel->setText("<font size=5><b>" + ui.pkgList->item(i)->data(60).toString());
-
-    // pkg version
-    QProcess p;
-    p.start("pacman -Sp --print-format %v " + ui.pkgList->item(i)->data(60).toString());
-    p.waitForFinished();
-    QString pkgVer = QString(p.readAll()).simplified().split(" ").last();
-    p.start("chroot " + QString(INSTALLATION_TARGET) + " pacman -Qq");
-    p.waitForFinished();
-    QString installedPkgz(p.readAll());
-    if (installedPkgz.contains(ui.pkgList->item(i)->data(60).toString()))
-        pkgVer.append("  (" + i18n("installed") + ")");
-    ui.pkgVerLabel->setText(pkgVer);
-
-    // pkg description
-    ui.pkgDescLabel->setText(ui.pkgList->item(i)->data(61).toString());
-
-    // pkg screenshot
-    ui.pkgScreenLabel->setPixmap(QPixmap("/tmp/" + ui.pkgList->item(i)->data(60).toString() + "_thumb.jpeg"));
-    ui.screenshotLabel->setPixmap(QPixmap("/tmp/" + ui.pkgList->item(i)->data(60).toString() + ".jpeg"));
-}
-
-void ConfigPage::setInstallPkgzPage()
-{
-    if (ui.stackedWidget->currentIndex() != 2) {
-        ui.stackedWidget->setCurrentIndex(2);
-        m_currentPage = 2;
-        ui.currentPageLabel->setText(i18n("Install Packaged Software"));
-    } else {
-        ui.stackedWidget->setCurrentIndex(0);
-        m_currentPage = 0;
-        ui.currentPageLabel->setText("");
-    }
-}
-
-void ConfigPage::pkgInstallButtonClicked()
-{
-    connect(&networkManager, SIGNAL(finished(QNetworkReply*)),
-             this, SLOT(handleNetworkData(QNetworkReply*)));
-
-    //use the url of the preferred mirror 
-    networkManager.get(QNetworkRequest(QString("http://chakra-project.org")));
-    if (m_currentOnlineStatus == "Offline") {
-        QString completeMessage = i18n("Sorry, you have no internet connection at the moment \n"
-                                       "Will stop package(s) installation now");
-
-        KDialog *dialog = new KDialog(this, Qt::FramelessWindowHint);
-        dialog->setButtons(KDialog::Ok);
-        dialog->setModal(true);
-        bool retbool;
-
-        KMessageBox::createKMessageBox(dialog, QMessageBox::Warning, completeMessage,
-                                       QStringList(), QString(), &retbool, KMessageBox::Notify);
-        return;
-    }
-
-    // disable buttons
-    ui.pkgInstallButton->setEnabled(false);
-    enableNextButton(false);
-    // mount special folders
-    QProcess::execute("mount -v -t proc none " + QString(INSTALLATION_TARGET) + "/proc");
-    QProcess::execute("mount -v -t sysfs none " + QString(INSTALLATION_TARGET) + "/sys");
-    QProcess::execute("mount -v -o bind /dev " + QString(INSTALLATION_TARGET) + "/dev");
-    QProcess::execute("mount -v -t devpts devpts " + QString(INSTALLATION_TARGET) + "/dev/pts");
-    QProcess::execute("xhost +");
-    // install pkgz
-
-    QStringList pkgz;
-    for (int i = 0; i < ui.pkgList->count(); i++) {
-        if (ui.pkgList->item(i)->checkState() == Qt::Checked)
-            pkgz.append(ui.pkgList->item(i)->data(60).toString());
-    }
-
-    if (pkgz.isEmpty())
-        return;
-
-    QProcess::execute("rm -f " + QString(INSTALLATION_TARGET) + "/var/lib/pacman/db.lck");
-
-    connect(m_timer, SIGNAL(timeout()), this, SLOT(updatePacmanProgress()));
-    m_timer->start(500);
-
-    m_process->start("chroot " + QString(INSTALLATION_TARGET) + " su " + m_install->userLoginList().first() + 
-                     " -c \"kdesu -t -d --noignorebutton -- pacman --noconfirm -Sf " + pkgz.join(" ") + "\"");
-
-    ui.progressLabel->setText(i18n("Waiting for server..."));
-    ui.progressBar->setValue(0);
-    ui.stackedWidget->setCurrentIndex(7);
 }
 
 void ConfigPage::updatePacmanProgress()
@@ -538,9 +400,6 @@ void ConfigPage::processComplete()
                                      QString(INSTALLATION_TARGET) + "/dev/pts " + 
                                      QString(INSTALLATION_TARGET) + "/dev");
     // re-enable buttons
-    ui.stackedWidget->setCurrentIndex(2);
-    m_currentPage = 2;
-    ui.pkgInstallButton->setEnabled(true);
     enableNextButton(true);
 
     m_timer->stop();
@@ -548,9 +407,9 @@ void ConfigPage::processComplete()
 
 void ConfigPage::setDownloadBundlesPage()
 {
-    if (ui.stackedWidget->currentIndex() != 3) {
-        ui.stackedWidget->setCurrentIndex(3);
-        m_currentPage = 3;
+    if (ui.stackedWidget->currentIndex() != 2) {
+        ui.stackedWidget->setCurrentIndex(2);
+        m_currentPage = 2;
         ui.currentPageLabel->setText(i18n("Download Popular Bundles"));
     } else {
         ui.stackedWidget->setCurrentIndex(0);
@@ -566,9 +425,9 @@ void ConfigPage::setChangeAppearancePage()
 
 void ConfigPage::setBootloaderPage()
 {
-    if (ui.stackedWidget->currentIndex() != 6) {
-        ui.stackedWidget->setCurrentIndex(6);
-        m_currentPage = 6;
+    if (ui.stackedWidget->currentIndex() != 4) {
+        ui.stackedWidget->setCurrentIndex(4);
+        m_currentPage = 4;
         ui.currentPageLabel->setText(i18n("Bootloader Settings"));
     } else {
         ui.stackedWidget->setCurrentIndex(0);
@@ -630,7 +489,7 @@ void ConfigPage::initRdGenerationComplete()
     ui.initRdBusyLabel->setVisible(false);
 
     // remove tmp files
-    QProcess::execute("bash -c \"rm " + tmpInitRd.join(" ") + " > /dev/null 2&>1\"");
+    QProcess::execute("bash -c \"rm " + tmpInitRd.join(" ") + " > /dev/null 2>&1\"");
 }
 
 void ConfigPage::bootloaderInstalled(int exitCode, QProcess::ExitStatus exitStatus)

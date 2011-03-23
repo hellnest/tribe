@@ -13,6 +13,7 @@ job_initialize_target()
 	mkdir -p -v -m 1777 ${mountpoint}/var/tmp
 	mkdir -p -v ${mountpoint}/var/log/old
 	mkdir -p -v ${mountpoint}/var/lock/sane
+	mkdir -p -v ${mountpoint}/var/cache/pacman/pkg
 	mkdir -p -v ${mountpoint}/boot/grub
 	mkdir -p -v ${mountpoint}/usr/lib/locale
 	mkdir -p -v ${mountpoint}/usr/share/icons/default

@@ -76,6 +76,8 @@ job_configure_users()
 	echo "%bundle ALL=NOPASSWD: /bin/mount -o loop -t squashfs *" >> ${mountpoint}/etc/sudoers
 	echo "%bundle ALL=NOPASSWD: /bin/mount -o loop -t ext4 *" >> ${mountpoint}/etc/sudoers
 	echo "%bundle ALL=NOPASSWD: /bin/umount *" >> ${mountpoint}/etc/sudoers
+	echo "%bundle ALL=NOPASSWD: /usr/bin/pacman -Sy" >> ${mountpoint}/etc/sudoers
+	echo "%bundle ALL=NOPASSWD: /usr/bin/yaourt -Sy" >> ${mountpoint}/etc/sudoers
 	chmod -v 0440 ${mountpoint}/etc/sudoers
 
 	msg "disable compositing"

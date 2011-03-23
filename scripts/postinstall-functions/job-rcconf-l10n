@@ -240,7 +240,8 @@ job_rcconf_l10n()
 	timezone_real=`echo $timezone | sed 's/-/\//g'`
 	sleep 0.5
 
-	sed -i -e "s#^.*LOCALE=.*#LOCALE=\"$locale\"#" ${mountpoint}/etc/rc.conf
+	current_locale=`cat ${mountpoint}/etc/rc.conf | grep LOCALE |  grep -v "#" | grep -v "DAEMON_LOCALE" | cut -d '"' -f 2`
+	sed -i -e "s#LOCALE=\"$current_locale\"#LOCALE=\"$locale\"#" ${mountpoint}/etc/rc.conf
 	sed -i -e "s#^.*TIMEZONE=.*#TIMEZONE=\"$timezone_real\"#" ${mountpoint}/etc/rc.conf
 
 	msg "activate selected locale"

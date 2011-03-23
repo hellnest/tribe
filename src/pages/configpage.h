@@ -43,10 +43,7 @@ private slots:
     virtual void createWidget();
     virtual void aboutToGoToNext();
     virtual void aboutToGoToPrevious();
-    
-    bool eventFilter(QObject*, QEvent*);
 
-    void setInstallPkgzPage();
     void setDownloadBundlesPage();
     void setChangeAppearancePage();
     void setInitRamdiskPage();
@@ -56,12 +53,6 @@ private slots:
     void result(KJob*);
     void updatePacmanProgress();
     void processComplete();
-
-    // install pkg page
-    void populatePkgzList();
-    void currentPkgItemChanged(int);
-    void pkgInstallButtonClicked();
-    void switchPkgScreenshot();
     
     // download bundles page
     void populateBundlesList();

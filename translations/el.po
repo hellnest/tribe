@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: bugs@chakra-project.org\n"
-"POT-Creation-Date: 2011-01-29 13:58+0100\n"
+"POT-Creation-Date: 2011-03-22 22:24+0100\n"
 "PO-Revision-Date: 2011-01-25 20:04+0200\n"
 "Last-Translator: Neo Kolokotronis <tetris4@gmail.com>\n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
@@ -152,59 +152,60 @@ msgstr "Δεν δόθηκαν περαιτέρω λεπτομέρειες"
 
 #. i18n: file: ui/pages/base.ui:20
 #. i18n: ectx: property (windowTitle), widget (QWidget, Base)
-#: src/main.cpp:42 rc.cpp:3
+#: src/main.cpp:41 rc.cpp:3
 msgid "Tribe"
 msgstr "Tribe"
 
-#: src/main.cpp:43
+#: src/main.cpp:42
 msgid "Graphical Installer for Chakra"
 msgstr "Πρόγραμμα γραφικής εγκατάστασης Chakra"
 
-#: src/main.cpp:44
-msgid "(c) 2008 - 2010 the Chakra Development Team"
+#: src/main.cpp:43
+#, fuzzy
+msgid "(c) 2008 - 2011 the Chakra Development Team"
 msgstr "(c) 2008 η oμάδα ανάπτυξης Chakra"
 
-#: src/main.cpp:44
+#: src/main.cpp:43
 msgid "chakra@chakra-project.org"
 msgstr "chakra@chakra-project.org"
 
-#: src/main.cpp:46
+#: src/main.cpp:45
 msgid "Dario Freddi"
 msgstr "Dario Freddi"
 
-#: src/main.cpp:46
+#: src/main.cpp:45
 msgid "Maintainer"
 msgstr "Συντηρητής"
 
-#: src/main.cpp:47
+#: src/main.cpp:46
 msgid "Lukas Appelhans"
 msgstr "Lukas Appelhans"
 
-#: src/main.cpp:47 src/main.cpp:51
+#: src/main.cpp:46 src/main.cpp:50
 msgid "Developer"
 msgstr "Προγραμματιστής Εφαρμογών"
 
-#: src/main.cpp:48
+#: src/main.cpp:47
 msgid "Jan Mette"
 msgstr "Jan Mette"
 
-#: src/main.cpp:48
+#: src/main.cpp:47
 msgid "PostInstall Backend and Artwork"
 msgstr "Σχέδια και Σύστημα Υποστήριξης της Μετα-Εγκατάστασης"
 
-#: src/main.cpp:49
+#: src/main.cpp:48
 msgid "Phil Miller"
 msgstr "Phil Miller"
 
-#: src/main.cpp:49 src/main.cpp:50
+#: src/main.cpp:48 src/main.cpp:49
 msgid "PostInstall Backend"
 msgstr "Σύστημα υποστήριξης της μετα-εγκατάστασης"
 
-#: src/main.cpp:50
+#: src/main.cpp:49
 msgid "Manuel Tortosa"
 msgstr "Manuel Tortosa"
 
-#: src/main.cpp:51
+#: src/main.cpp:50
 msgid "Drake Justice"
 msgstr "Drake Justice"
 
@@ -223,19 +224,19 @@ msgstr ""
 "εγκατάστασης στο /tmp\n"
 "ή ζητήστε βοήθεια στα φόρουμ μας."
 
-#: src/pages/bootloaderpage.cpp:52 src/pages/configpage.cpp:677
+#: src/pages/bootloaderpage.cpp:52 src/pages/configpage.cpp:536
 msgid "Installing bootloader..."
 msgstr "Εγκατάσταση του bootloader..."
 
-#: src/pages/bootloaderpage.cpp:82 src/pages/configpage.cpp:647
+#: src/pages/bootloaderpage.cpp:82 src/pages/configpage.cpp:506
 msgid "Creating OS list..."
 msgstr "Δημιουργία λίστας Λειτουργικών Συστημάτων..."
 
-#: src/pages/configpage.cpp:195 src/pages/configpage.cpp:497
+#: src/pages/configpage.cpp:151 src/pages/configpage.cpp:359
 msgid "Downloading"
 msgstr "Λήψη"
 
-#: src/pages/configpage.cpp:305
+#: src/pages/configpage.cpp:259
 msgid ""
 "Sorry, you have no internet connection at the moment \n"
 "Will stop bundle(s) installation now"
@@ -243,77 +244,57 @@ msgstr ""
 "Συγγνώμη αλλά δεν υπάρχει σύνδεση στο διαδίκτυο αυτή τη στιγμή Η εγκατάσταση "
 "των πακέτων θα τερματιστεί."
 
-#: src/pages/configpage.cpp:398
-msgid "installed"
-msgstr "εγκαταστάθηκε"
-
-#: src/pages/configpage.cpp:414
-msgid "Install Packaged Software"
-msgstr "Εγκατάσταση Πακεταρισμένου Λογισμικού"
-
-#: src/pages/configpage.cpp:430
-msgid ""
-"Sorry, you have no internet connection at the moment \n"
-"Will stop package(s) installation now"
-msgstr ""
-"Συγγνώμη αλλά δεν υπάρχει σύνδεση στο διαδίκτυο αυτή τη στιγμή Η εγκατάσταση "
-"των πακέτων θα τερματιστεί."
-
-#: src/pages/configpage.cpp:471
-msgid "Waiting for server..."
-msgstr "Σε αναμονή διακομιστή.."
-
-#: src/pages/configpage.cpp:483
+#: src/pages/configpage.cpp:345
 msgid "loading package data..."
 msgstr "φόρτωση δεδομένων πακέτων.."
 
-#: src/pages/configpage.cpp:484
+#: src/pages/configpage.cpp:346
 msgid "Loading package data..."
 msgstr "Φόρτωση δεδομένων πακέτων..."
 
-#: src/pages/configpage.cpp:485
+#: src/pages/configpage.cpp:347
 msgid "checking dependencies..."
 msgstr "έλεγχος εξαρτήσεων.."
 
-#: src/pages/configpage.cpp:486
+#: src/pages/configpage.cpp:348
 msgid "Checking dependencies..."
 msgstr "Έλεγχος εξαρτήσεων.."
 
-#: src/pages/configpage.cpp:487
+#: src/pages/configpage.cpp:349
 msgid "resolving dependencies..."
 msgstr "επίλυση εξαρτήσεων..."
 
-#: src/pages/configpage.cpp:488
+#: src/pages/configpage.cpp:350
 msgid "Resolving dependencies..."
 msgstr "Επίλυση εξαρτήσεων.."
 
-#: src/pages/configpage.cpp:489
+#: src/pages/configpage.cpp:351
 msgid "checking package integrity..."
 msgstr "έλεγχος ακεραιότητας πακέτων..."
 
-#: src/pages/configpage.cpp:490
+#: src/pages/configpage.cpp:352
 msgid "Checking package integrity..."
 msgstr "Έλεγχος ακεραιότητας πακέτων..."
 
-#: src/pages/configpage.cpp:491
+#: src/pages/configpage.cpp:353
 msgid "Total Download Size:"
 msgstr "Ολικό Μέγεθος Κατεβάσματος:"
 
-#. i18n: file: ui/pages/config.ui:120
+#. i18n: file: ui/pages/config.ui:930
 #. i18n: ectx: property (text), widget (QPushButton, downloadBundlesButton)
-#: src/pages/configpage.cpp:554 rc.cpp:105
+#: src/pages/configpage.cpp:413 rc.cpp:165
 msgid "Download Popular Bundles"
 msgstr "Κατέβασμα Δημοφιλών Πακέτων"
 
-#. i18n: file: ui/pages/config.ui:200
+#. i18n: file: ui/pages/config.ui:908
 #. i18n: ectx: property (text), widget (QPushButton, bootloaderSettingsButton)
-#: src/pages/configpage.cpp:572 rc.cpp:114
+#: src/pages/configpage.cpp:431 rc.cpp:162
 msgid "Bootloader Settings"
 msgstr "Ρυθμίσεις διαχειριστή εκκίνησης"
 
-#. i18n: file: ui/pages/config.ui:161
+#. i18n: file: ui/pages/config.ui:869
 #. i18n: ectx: property (text), widget (QPushButton, initRamDiskButton)
-#: src/pages/configpage.cpp:585 rc.cpp:108
+#: src/pages/configpage.cpp:444 rc.cpp:156
 msgid "Customize Initial Ramdisk"
 msgstr "Προσαρμογή Αρχικού Ramdisk"
 
@@ -345,9 +326,7 @@ msgstr "Το σημείο προσάρτισης πρέπει να αρχίζε�
 msgid "Error"
 msgstr "Σφάλμα"
 
-#. i18n: file: ui/pages/partition.ui:363
-#. i18n: ectx: property (text), widget (QPushButton, newButton)
-#: src/pages/partitionpage.cpp:196 rc.cpp:372
+#: src/pages/partitionpage.cpp:196
 msgid "New"
 msgstr "Νέο"
 
@@ -359,40 +338,28 @@ msgstr "Δεν υποστηρίζεται"
 msgid "Loading partitions..."
 msgstr "Φόρτωση κατατμήσεων"
 
-#: src/pages/partitionpage.cpp:527
-msgid ""
-"The selected volume already has a partition table.. Overwrite it? (this will "
-"destroy all data on the device)"
-msgstr ""
-"Ο επιλεγμένος τόμος έχει ήδη ένα πίνακα κατατμήσης...Να αντικατασταθεί; "
-"(αυτό θα διαγράψει όλα τα δεδομένα στη συσκευή) "
-
-#: src/pages/partitionpage.cpp:527 src/pages/partitionpage.cpp:534
-msgid "Warning"
-msgstr "Προειδοποίηση"
-
-#: src/pages/partitionpage.cpp:534
-msgid ""
-"This operation will destroy all data on the selected volume.. Continue "
-"anyway?"
-msgstr ""
-"Η πράξη αυτή θα καταστρέψει όλα τα δεδομένα στον επιλεγμένο τόμο.. Συνέχεια "
-"παρ' αυτά;"
-
-#. i18n: file: ui/pages/partition.ui:111
-#. i18n: ectx: property (text), item, widget (KComboBox, typeBox)
-#: src/pages/partitionpage.cpp:565 src/pages/partitionpage.cpp:718
-#: src/pages/partitionpage.cpp:801 rc.cpp:345
+#: src/pages/partitionpage.cpp:660
 msgid "Extended"
 msgstr "Εκτεταμένος"
 
-#. i18n: file: ui/pages/partition.ui:116
-#. i18n: ectx: property (text), item, widget (KComboBox, typeBox)
-#: src/pages/partitionpage.cpp:802 rc.cpp:348
-msgid "Primary"
-msgstr "Κύριος"
+#: src/pages/partitionpage.cpp:803
+msgid ""
+"Tribe detected target partitions which are mounted. Do you want Tribe to "
+"unmount them?"
+msgstr ""
 
-#: src/pages/partitionpage.cpp:956
+#: src/pages/partitionpage.cpp:819
+msgid ""
+"Tribe failed to unmount a partition which is target for the installation. "
+"You need to unmount the partitions manually before you can proceed."
+msgstr ""
+
+#: src/pages/partitionpage.cpp:821
+#, fuzzy
+msgid "Target partitions mounted"
+msgstr "Τα διαμερίσματα συνδέθηκαν"
+
+#: src/pages/partitionpage.cpp:832
 msgid ""
 "The partition you have chosen to mount as '/' is too small. It should have a "
 "capacity of at least %1 for a successful installation."
@@ -400,11 +367,11 @@ msgstr ""
 "Η κατάτμηση που επιλέξατε  να προσαρτήσετε σαν '/' είναι πολύ μικρή. Θα "
 "πρέπει να έχει χωρητικότητα τουλάχιστο %1 για μια επιτυχημένη εγκατάσταση."
 
-#: src/pages/partitionpage.cpp:959 src/pages/partitionpage.cpp:994
+#: src/pages/partitionpage.cpp:835 src/pages/partitionpage.cpp:870
 msgid "Target's capacity not sufficient"
 msgstr "Η χωριτηκότητα του στόχου δεν είναι αρκετή"
 
-#: src/pages/partitionpage.cpp:976
+#: src/pages/partitionpage.cpp:852
 msgid ""
 "The partition you have chosen to mount as '/' is not marked for formatation. "
 "This might create problems. Do you still want to continue without formating "
@@ -414,7 +381,7 @@ msgstr ""
 "διαμόρφωση. Αυτό μπορεί να προκαλέσει προβλήματα. Εξακολουθείτε να "
 "επιθυμείτε να συνεχίσετε χωρίς τη διαμόρφωσή της;"
 
-#: src/pages/partitionpage.cpp:992
+#: src/pages/partitionpage.cpp:868
 msgid ""
 "You have selected '%1' as a mountpoint, which is not valid. A valid "
 "mountpoint always starts with '/' and represents a directory on disk"
@@ -509,7 +476,7 @@ msgstr ""
 #. i18n: ectx: property (text), widget (QLabel, label_3)
 #. i18n: file: ui/pages/releasenotes.ui:14
 #. i18n: ectx: property (windowTitle), widget (QWidget, ReleaseNotes)
-#: rc.cpp:13 rc.cpp:415
+#: rc.cpp:13 rc.cpp:388
 msgid "Release Notes"
 msgstr "Σημειώσεις Έκδοσης"
 
@@ -703,11 +670,11 @@ msgstr "Εγκατάσταση Προγράμματος Εκκίνησης"
 
 #. i18n: file: ui/pages/bootloader.ui:89
 #. i18n: ectx: property (text), widget (QPushButton, pushButton)
-#. i18n: file: ui/pages/partition.ui:325
+#. i18n: file: ui/pages/partition.ui:260
 #. i18n: ectx: property (toolTip), widget (QPushButton, advancedButton)
-#. i18n: file: ui/pages/partition.ui:328
+#. i18n: file: ui/pages/partition.ui:263
 #. i18n: ectx: property (text), widget (QPushButton, advancedButton)
-#: rc.cpp:83 rc.cpp:363 rc.cpp:366
+#: rc.cpp:83 rc.cpp:345 rc.cpp:348
 msgid "Advanced..."
 msgstr "Για προχωρημένους..."
 
@@ -759,139 +726,127 @@ msgstr ""
 "Τώρα που το Chakra εγκαταστήθηκε, μπορείτε να το ρυθμίσετε σύμφωνα με τις "
 "προτιμήσεις σας."
 
-#. i18n: file: ui/pages/config.ui:95
-#. i18n: ectx: property (text), widget (QPushButton, installPkgzButton)
-#: rc.cpp:102
-msgid "Install Packages"
-msgstr "Εγκατάσταση Πακέτων"
-
-#. i18n: file: ui/pages/config.ui:171
-#. i18n: ectx: property (text), widget (QLabel, label_3)
-#: rc.cpp:111
-msgid "Advanced Options"
-msgstr "Προχωρημένες Επιλογές"
-
-#. i18n: file: ui/pages/config.ui:225
-#. i18n: ectx: property (text), widget (QPushButton, changeAppearanceButton)
-#: rc.cpp:117
-msgid "Change System Appearance"
-msgstr "Αλλαγή Εμφάνισης Συστήματος"
-
-#. i18n: file: ui/pages/config.ui:285
+#. i18n: file: ui/pages/config.ui:129
 #. i18n: ectx: property (text), widget (QCheckBox, usb)
-#: rc.cpp:120
+#: rc.cpp:102
 msgid "USB"
 msgstr "USB"
 
-#. i18n: file: ui/pages/config.ui:292
+#. i18n: file: ui/pages/config.ui:136
 #. i18n: ectx: property (text), widget (QCheckBox, nfs)
-#: rc.cpp:123
+#: rc.cpp:105
 msgid "NFS Shares"
 msgstr "NFS Shares"
 
-#. i18n: file: ui/pages/config.ui:299
+#. i18n: file: ui/pages/config.ui:143
 #. i18n: ectx: property (text), widget (QLabel, label_4)
-#: rc.cpp:126
+#: rc.cpp:108
 msgid "Activate support for booting from:"
 msgstr "Ενεργοποίηση υποστήριξης για εκκίνηση από: "
 
-#. i18n: file: ui/pages/config.ui:306
+#. i18n: file: ui/pages/config.ui:150
 #. i18n: ectx: property (text), widget (QCheckBox, firewire)
-#: rc.cpp:129
+#: rc.cpp:111
 msgid "FireWire"
 msgstr "Firewire"
 
-#. i18n: file: ui/pages/config.ui:313
+#. i18n: file: ui/pages/config.ui:157
 #. i18n: ectx: property (text), widget (QCheckBox, raid)
-#: rc.cpp:132
+#: rc.cpp:114
 msgid "Software Raid Arrays"
 msgstr "Software Raid Arrays"
 
-#. i18n: file: ui/pages/config.ui:320
+#. i18n: file: ui/pages/config.ui:164
 #. i18n: ectx: property (text), widget (QCheckBox, lvm2)
-#: rc.cpp:135
+#: rc.cpp:117
 msgid "LVM2 Volumes"
 msgstr "Τόμους LVM2"
 
-#. i18n: file: ui/pages/config.ui:327
+#. i18n: file: ui/pages/config.ui:171
 #. i18n: ectx: property (text), widget (QCheckBox, encrypted)
-#: rc.cpp:138
+#: rc.cpp:120
 msgid "Encrypted Volumes"
 msgstr "Κρυπτογραφημένους Τόμους"
 
-#. i18n: file: ui/pages/config.ui:346
+#. i18n: file: ui/pages/config.ui:190
 #. i18n: ectx: property (text), widget (QPushButton, generateInitRamDiskButton)
-#: rc.cpp:141
+#: rc.cpp:123
 msgid "Generate Initial Ramdisk"
 msgstr "Δημιουργία Αρχικού Ramdisk"
 
-#. i18n: file: ui/pages/config.ui:382
+#. i18n: file: ui/pages/config.ui:226
 #. i18n: ectx: property (text), widget (QCheckBox, mdp)
-#: rc.cpp:144
+#: rc.cpp:126
 msgid "MDP Partition Arrays"
 msgstr "MDP Partition Arrays"
 
-#. i18n: file: ui/pages/config.ui:389
+#. i18n: file: ui/pages/config.ui:233
 #. i18n: ectx: property (text), widget (QCheckBox, pcmcia)
-#: rc.cpp:147
+#: rc.cpp:129
 msgid "PCMCIA"
 msgstr "PCMCIA"
 
-#. i18n: file: ui/pages/config.ui:701
-#. i18n: ectx: property (text), widget (QPushButton, pkgInstallButton)
-#: rc.cpp:150
-msgid "Install"
-msgstr "Εγκατάσταση"
-
-#. i18n: file: ui/pages/config.ui:790
+#. i18n: file: ui/pages/config.ui:324
 #. i18n: ectx: property (text), widget (QPushButton, bundlesDownloadButton)
-#: rc.cpp:153
+#: rc.cpp:132
 msgid "Download"
 msgstr "Κατέβασμα"
 
-#. i18n: file: ui/pages/config.ui:884
+#. i18n: file: ui/pages/config.ui:418
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: rc.cpp:156
+#: rc.cpp:135
 msgid "Chakra"
 msgstr "Chakra"
 
-#. i18n: file: ui/pages/config.ui:932
+#. i18n: file: ui/pages/config.ui:466
 #. i18n: ectx: property (text), widget (QLabel, label_6)
-#: rc.cpp:159
+#: rc.cpp:138
 msgid "Mac"
 msgstr "Mac"
 
-#. i18n: file: ui/pages/config.ui:961
+#. i18n: file: ui/pages/config.ui:495
 #. i18n: ectx: property (text), widget (QLabel, label_7)
-#: rc.cpp:162
+#: rc.cpp:141
 msgid "Windows"
 msgstr "Windows"
 
-#. i18n: file: ui/pages/config.ui:1040
+#. i18n: file: ui/pages/config.ui:574
 #. i18n: ectx: property (text), widget (QPushButton, colorizeButton)
-#: rc.cpp:165
+#: rc.cpp:144
 msgid "Colorize"
 msgstr "Χρωματισμός"
 
-#. i18n: file: ui/pages/config.ui:1200
+#. i18n: file: ui/pages/config.ui:676
 #. i18n: ectx: property (text), widget (QCheckBox, bootloaderCheckBox)
-#: rc.cpp:168
+#: rc.cpp:147
 msgid "Install GRUB"
 msgstr "Εγκατάσταση GRUB"
 
-#. i18n: file: ui/pages/config.ui:1285
+#. i18n: file: ui/pages/config.ui:761
 #. i18n: ectx: property (text), widget (QPushButton, cancelButton)
-#. i18n: file: ui/pages/partition.ui:186
+#. i18n: file: ui/pages/partition.ui:149
 #. i18n: ectx: property (text), widget (KPushButton, editPartitionCancelButton)
 #. i18n: file: ui/widgets/avatardialog.ui:114
 #. i18n: ectx: property (text), widget (QPushButton, cancelButton)
-#: rc.cpp:171 rc.cpp:357 rc.cpp:453
+#: rc.cpp:150 rc.cpp:339 rc.cpp:426
 msgid "Cancel"
 msgstr "Ακύρωση"
 
+#. i18n: file: ui/pages/config.ui:841
+#. i18n: ectx: property (text), widget (QPushButton, changeAppearanceButton)
+#: rc.cpp:153
+msgid "Change System Appearance"
+msgstr "Αλλαγή Εμφάνισης Συστήματος"
+
+#. i18n: file: ui/pages/config.ui:879
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: rc.cpp:159
+msgid "Advanced Options"
+msgstr "Προχωρημένες Επιλογές"
+
 #. i18n: file: ui/pages/finish.ui:46
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: rc.cpp:174
+#: rc.cpp:168
 msgid ""
 "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
 "REC-html40/strict.dtd\">\n"
@@ -919,7 +874,7 @@ msgstr ""
 
 #. i18n: file: ui/pages/finish.ui:68
 #. i18n: ectx: property (text), widget (QLabel, label_2)
-#: rc.cpp:181
+#: rc.cpp:175
 msgid ""
 "Congratulations, the installation has been completed!\n"
 "\n"
@@ -957,25 +912,25 @@ msgstr ""
 
 #. i18n: file: ui/pages/finish.ui:105
 #. i18n: ectx: property (text), widget (QPushButton, rebootButton)
-#: rc.cpp:197
+#: rc.cpp:191
 msgid "Restart Computer"
 msgstr "Επανεκκίνηση του υπολογιστή"
 
 #. i18n: file: ui/pages/finish.ui:118
 #. i18n: ectx: property (text), widget (QPushButton, chakraButton)
-#: rc.cpp:200
+#: rc.cpp:194
 msgid "Keep using the LiveCD"
 msgstr "Συνεχίστε να χρησιμοποιείται το LiveCD"
 
 #. i18n: file: ui/pages/init.ui:13
 #. i18n: ectx: property (windowTitle), widget (QWidget, tribeInit)
-#: rc.cpp:203
+#: rc.cpp:197
 msgid "Ramdisk"
 msgstr "Ramdisk"
 
 #. i18n: file: ui/pages/init.ui:49
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: rc.cpp:206
+#: rc.cpp:200
 msgid ""
 "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
 "REC-html40/strict.dtd\">\n"
@@ -1003,7 +958,7 @@ msgstr ""
 
 #. i18n: file: ui/pages/init.ui:58
 #. i18n: ectx: property (text), widget (QLabel, label_2)
-#: rc.cpp:213
+#: rc.cpp:207
 msgid ""
 "Your hardware will be configured automatically during the installation and a "
 "initial ramdisk environment for booting the linux kernel will be built. "
@@ -1022,43 +977,43 @@ msgstr ""
 
 #. i18n: file: ui/pages/init.ui:81
 #. i18n: ectx: property (text), widget (QPushButton, pushButton)
-#: rc.cpp:216
+#: rc.cpp:210
 msgid "Ramdisk Options"
 msgstr "Επιλογές Ramdisk"
 
 #. i18n: file: ui/pages/init.ui:111
 #. i18n: ectx: property (text), widget (QCheckBox, usb)
-#: rc.cpp:219
+#: rc.cpp:213
 msgid "Activate support for booting from USB devices"
 msgstr "Ενεργοποίηση της υποστήριξη για την εκκίνηση απο συσκευές USB"
 
 #. i18n: file: ui/pages/init.ui:118
 #. i18n: ectx: property (text), widget (QCheckBox, firewire)
-#: rc.cpp:222
+#: rc.cpp:216
 msgid "Activate support for booting from FireWire devices"
 msgstr "Ενεργοποίηση της υποστήριξη για την εκκίνηση απο συσκευές FireWire"
 
 #. i18n: file: ui/pages/init.ui:125
 #. i18n: ectx: property (text), widget (QCheckBox, pcmcia)
-#: rc.cpp:225
+#: rc.cpp:219
 msgid "Activate support for booting from PCMCIA devices"
 msgstr "Ενεργοποίηση της υποστήριξη για την εκκίνηση απο συσκευές PCMCIA"
 
 #. i18n: file: ui/pages/init.ui:132
 #. i18n: ectx: property (text), widget (QCheckBox, nfs)
-#: rc.cpp:228
+#: rc.cpp:222
 msgid "Activate support for booting from NFS shares"
 msgstr "Ενεργοποίηση της υποστήριξη για την εκκίνηση απο μετοχές NFS"
 
 #. i18n: file: ui/pages/init.ui:139
 #. i18n: ectx: property (text), widget (QCheckBox, raid)
-#: rc.cpp:231
+#: rc.cpp:225
 msgid "Activate support for booting from Software Raid arrays"
 msgstr "Ενεργοποίηση της υποστήριξη για την εκκίνηση απο σειρές Software Raid"
 
 #. i18n: file: ui/pages/init.ui:146
 #. i18n: ectx: property (text), widget (QCheckBox, mdp)
-#: rc.cpp:234
+#: rc.cpp:228
 msgid "Activate support for booting from Software Raid/MDP Partition arrays"
 msgstr ""
 "Ενεργοποίηση της υποστήριξη για την εκκίνηση απο σειρές διαμερίσματος "
@@ -1066,50 +1021,50 @@ msgstr ""
 
 #. i18n: file: ui/pages/init.ui:153
 #. i18n: ectx: property (text), widget (QCheckBox, lvm2)
-#: rc.cpp:237
+#: rc.cpp:231
 msgid "Activate support for booting from LVM2 volumes"
 msgstr "Ενεργοποίηση της υποστήριξη για την εκκίνηση απο τόμους LVM2"
 
 #. i18n: file: ui/pages/init.ui:160
 #. i18n: ectx: property (text), widget (QCheckBox, encrypted)
-#: rc.cpp:240
+#: rc.cpp:234
 msgid "Activate support for booting from Encrypted volumes"
 msgstr ""
 "Ενεργοποίηση της υποστήριξη για την εκκίνηση απο κρυπτογραφημένους τόμους"
 
 #. i18n: file: ui/pages/installation.ui:14
 #. i18n: ectx: property (windowTitle), widget (QWidget, Installation)
-#: rc.cpp:243
+#: rc.cpp:237
 msgid "Tribe Installation"
 msgstr "Eγκατάσταση του Tribe"
 
 #. i18n: file: ui/pages/installation.ui:88
 #. i18n: ectx: property (text), item, widget (QComboBox, comboBox)
-#: rc.cpp:246
+#: rc.cpp:240
 msgid "Nine Inch Nails - Discipline"
 msgstr "Nine Inch Nails - Discipline"
 
 #. i18n: file: ui/pages/installation.ui:93
 #. i18n: ectx: property (text), item, widget (QComboBox, comboBox)
-#: rc.cpp:249
+#: rc.cpp:243
 msgid "Severed Fifth - War"
 msgstr "Severed Fifth - War"
 
 #. i18n: file: ui/pages/installation.ui:98
 #. i18n: ectx: property (text), item, widget (QComboBox, comboBox)
-#: rc.cpp:252
+#: rc.cpp:246
 msgid "Dunkelstern - Out of the box"
 msgstr "Dunkelstern - Out of the box"
 
 #. i18n: file: ui/pages/intro.ui:14
 #. i18n: ectx: property (windowTitle), widget (QWidget, Intro)
-#: rc.cpp:255
+#: rc.cpp:249
 msgid "Tribe Intro"
 msgstr "Εισαγωγή Tribe"
 
 #. i18n: file: ui/pages/intro.ui:105
 #. i18n: ectx: property (text), widget (QLabel, label_3)
-#: rc.cpp:258
+#: rc.cpp:252
 msgid ""
 "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
 "REC-html40/strict.dtd\">\n"
@@ -1230,7 +1185,7 @@ msgstr ""
 
 #. i18n: file: ui/pages/license.ui:49
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: rc.cpp:275
+#: rc.cpp:269
 msgid ""
 "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
 "REC-html40/strict.dtd\">\n"
@@ -1258,7 +1213,7 @@ msgstr ""
 
 #. i18n: file: ui/pages/license.ui:61
 #. i18n: ectx: property (text), widget (QLabel, label_2)
-#: rc.cpp:282
+#: rc.cpp:276
 msgid ""
 "Chakra includes some proprietary software like hardware drivers, media "
 "plugins and fonts. To install them, you have to read and accept their "
@@ -1273,31 +1228,31 @@ msgstr ""
 
 #. i18n: file: ui/pages/license.ui:74
 #. i18n: ectx: property (text), widget (QLabel, licenseLabel)
-#: rc.cpp:285
+#: rc.cpp:279
 msgid "Approve license for:"
 msgstr "Έγκριση αδείας για:"
 
 #. i18n: file: ui/pages/license.ui:103
 #. i18n: ectx: property (text), widget (QRadioButton, declineButton)
-#: rc.cpp:288
+#: rc.cpp:282
 msgid "Decline License"
 msgstr "Απόρριψη αδείας"
 
 #. i18n: file: ui/pages/license.ui:110
 #. i18n: ectx: property (text), widget (QRadioButton, acceptButton)
-#: rc.cpp:291
+#: rc.cpp:285
 msgid "Accept License"
 msgstr "Αποδοχή αδείας"
 
 #. i18n: file: ui/pages/locale.ui:14
 #. i18n: ectx: property (windowTitle), widget (QWidget, Locale)
-#: rc.cpp:294
+#: rc.cpp:288
 msgid "Form"
 msgstr "Σχηματισμός"
 
 #. i18n: file: ui/pages/locale.ui:35
 #. i18n: ectx: property (text), widget (QLabel, label_4)
-#: rc.cpp:297
+#: rc.cpp:291
 msgid ""
 "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
 "REC-html40/strict.dtd\">\n"
@@ -1325,7 +1280,7 @@ msgstr ""
 
 #. i18n: file: ui/pages/locale.ui:45
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: rc.cpp:304
+#: rc.cpp:298
 msgid ""
 "Please select the nearest city on the globe so the installer can suggest the "
 "locale and timezone settings for you. You can fine-tune the suggested "
@@ -1340,25 +1295,25 @@ msgstr ""
 
 #. i18n: file: ui/pages/locale.ui:69
 #. i18n: ectx: property (clickMessage), widget (KLineEdit, locationsSearch)
-#: rc.cpp:307
+#: rc.cpp:301
 msgid "Search..."
 msgstr "Αναζήτηση..."
 
 #. i18n: file: ui/pages/locale.ui:162
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: rc.cpp:310
+#: rc.cpp:304
 msgid "Continent:"
 msgstr "Ήπειρος:"
 
 #. i18n: file: ui/pages/locale.ui:185
 #. i18n: ectx: property (text), widget (QLabel, label_3)
-#: rc.cpp:313
+#: rc.cpp:307
 msgid "Language:"
 msgstr "Γλώσσα:"
 
 #. i18n: file: ui/pages/locale.ui:208
 #. i18n: ectx: property (text), widget (QLabel, label_2)
-#: rc.cpp:316
+#: rc.cpp:310
 msgid "Locale:"
 msgstr "Τοπικές ρυθμίσεις:"
 
@@ -1366,25 +1321,25 @@ msgstr "Τοπικές ρυθμίσεις:"
 #. i18n: ectx: property (text), widget (QCheckBox, showLocalesCheck)
 #. i18n: file: ui/pages/locale.ui:270
 #. i18n: ectx: property (text), widget (QCheckBox, showKDELangsCheck)
-#: rc.cpp:319 rc.cpp:322
+#: rc.cpp:313 rc.cpp:316
 msgid "Show all"
 msgstr "Εμφάνιση όλων"
 
 #. i18n: file: ui/pages/locale.ui:277
 #. i18n: ectx: property (text), widget (QLabel, label_6)
-#: rc.cpp:325
+#: rc.cpp:319
 msgid "Region: "
 msgstr "Περιοχή:"
 
 #. i18n: file: ui/pages/partition.ui:14
 #. i18n: ectx: property (windowTitle), widget (QWidget, Partition)
-#: rc.cpp:328
+#: rc.cpp:322
 msgid "Partition"
 msgstr "Κατάτμηση:"
 
 #. i18n: file: ui/pages/partition.ui:43
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: rc.cpp:331
+#: rc.cpp:325
 msgid ""
 "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
 "REC-html40/strict.dtd\">\n"
@@ -1412,7 +1367,7 @@ msgstr ""
 
 #. i18n: file: ui/pages/partition.ui:58
 #. i18n: ectx: property (text), widget (QLabel, descriptionLabel)
-#: rc.cpp:338
+#: rc.cpp:332
 msgid ""
 "Please select a mountpoint for your partitions. No permanent changes to your "
 "hard drive will be made when you will press \"Next\". Note: selected "
@@ -1422,67 +1377,43 @@ msgstr ""
 "μόνιμη αλλαγή στον σκληρό σας δίσκο δεν θα γίνει όταν πατήσετε \"Επόμενο\". "
 "Σημείωση: Οι επιλεγμένες κατατμήσεις δεν θα μορφοποιηθούν άμεσα."
 
-#. i18n: file: ui/pages/partition.ui:100
-#. i18n: ectx: property (text), widget (QLabel, typeLabel)
-#: rc.cpp:342
-msgid "Type: "
-msgstr "Τύπος:"
-
-#. i18n: file: ui/pages/partition.ui:127
+#. i18n: file: ui/pages/partition.ui:103
 #. i18n: ectx: property (text), widget (QLabel, filesystemLabel)
-#: rc.cpp:351
+#: rc.cpp:336
 msgid "Filesystem: "
 msgstr "Σύστημα αρχείων:"
 
-#. i18n: file: ui/pages/partition.ui:173
+#. i18n: file: ui/pages/partition.ui:201
 #. i18n: ectx: property (text), widget (KPushButton, editPartitionOkButton)
 #. i18n: file: ui/widgets/avatardialog.ui:85
 #. i18n: ectx: property (text), widget (QPushButton, okButton)
-#: rc.cpp:354 rc.cpp:450
+#: rc.cpp:342 rc.cpp:423
 msgid "Ok"
 msgstr "Εντάξει"
 
-#. i18n: file: ui/pages/partition.ui:234
-#. i18n: ectx: property (suffix), widget (KIntSpinBox, sizeSpinBox)
-#: rc.cpp:360
-msgid " MiB"
-msgstr "ΜiB"
-
-#. i18n: file: ui/pages/partition.ui:341
-#. i18n: ectx: property (toolTip), widget (QPushButton, newPartTableButton)
-#: rc.cpp:369
-msgid "Create a new partition table on the selected device"
-msgstr "Δημιουργία νέου πίνακα κατατμήσεων στην επιλεγμένη συσκευή"
-
-#. i18n: file: ui/pages/partition.ui:382
-#. i18n: ectx: property (text), widget (QPushButton, deleteButton)
-#: rc.cpp:375
-msgid "Delete"
-msgstr "Διαγραφή"
-
-#. i18n: file: ui/pages/partition.ui:401
+#. i18n: file: ui/pages/partition.ui:298
 #. i18n: ectx: property (text), widget (QPushButton, formatButton)
-#: rc.cpp:378
+#: rc.cpp:351
 msgid "Format"
 msgstr "Μορφοποίηση"
 
-#. i18n: file: ui/pages/partition.ui:420
+#. i18n: file: ui/pages/partition.ui:317
 #. i18n: ectx: property (toolTip), widget (QPushButton, undoButton)
-#. i18n: file: ui/pages/partition.ui:423
+#. i18n: file: ui/pages/partition.ui:320
 #. i18n: ectx: property (text), widget (QPushButton, undoButton)
-#: rc.cpp:381 rc.cpp:384
+#: rc.cpp:354 rc.cpp:357
 msgid "Undo"
 msgstr "Αναίρεση"
 
-#. i18n: file: ui/pages/partition.ui:439
+#. i18n: file: ui/pages/partition.ui:336
 #. i18n: ectx: property (toolTip), widget (QPushButton, unmountButton)
-#: rc.cpp:387
+#: rc.cpp:360
 msgid "Unmount the selected partition"
 msgstr "Αποπροσάρτηση επιλεγμένης κατάτμησης"
 
 #. i18n: file: ui/pages/readyinstall.ui:51
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: rc.cpp:390
+#: rc.cpp:363
 msgid ""
 "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
 "REC-html40/strict.dtd\">\n"
@@ -1510,7 +1441,7 @@ msgstr ""
 
 #. i18n: file: ui/pages/readyinstall.ui:77
 #. i18n: ectx: property (text), widget (QLabel, label_2)
-#: rc.cpp:397
+#: rc.cpp:370
 msgid ""
 "The system will be installed with the following settings. Before continuing, "
 "please review your selections:\n"
@@ -1520,7 +1451,7 @@ msgstr ""
 
 #. i18n: file: ui/pages/readyinstall.ui:147
 #. i18n: ectx: property (text), widget (QLabel, label_4)
-#: rc.cpp:401
+#: rc.cpp:374
 msgid ""
 "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
 "REC-html40/strict.dtd\">\n"
@@ -1549,7 +1480,7 @@ msgstr ""
 
 #. i18n: file: ui/pages/readyinstall.ui:211
 #. i18n: ectx: property (text), widget (QLabel, formatLabel)
-#: rc.cpp:408
+#: rc.cpp:381
 msgid ""
 "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
 "REC-html40/strict.dtd\">\n"
@@ -1579,7 +1510,7 @@ msgstr ""
 
 #. i18n: file: ui/pages/releasenotes.ui:47
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: rc.cpp:418
+#: rc.cpp:391
 msgid ""
 "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
 "REC-html40/strict.dtd\">\n"
@@ -1607,7 +1538,7 @@ msgstr ""
 
 #. i18n: file: ui/pages/releasenotes.ui:60
 #. i18n: ectx: property (text), widget (QLabel, label_2)
-#: rc.cpp:425
+#: rc.cpp:398
 msgid ""
 "Check out what's new, the known issues and general information about this "
 "version of Chakra. As always, you are encouraged to tell us what you think, "
@@ -1619,7 +1550,7 @@ msgstr ""
 
 #. i18n: file: ui/pages/usercreation.ui:35
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: rc.cpp:428
+#: rc.cpp:401
 msgid ""
 "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/"
 "REC-html40/strict.dtd\">\n"
@@ -1647,19 +1578,19 @@ msgstr ""
 
 #. i18n: file: ui/pages/usercreation.ui:42
 #. i18n: ectx: property (text), widget (QLabel, label_2)
-#: rc.cpp:435
+#: rc.cpp:408
 msgid "Enter at least one login name and password."
 msgstr "Εισάγετε τουλάχιστο ένα όνομα σύνδεσης και κωδικό."
 
 #. i18n: file: ui/pages/usercreation.ui:178
 #. i18n: ectx: property (toolTip), widget (QPushButton, addUser)
-#: rc.cpp:438
+#: rc.cpp:411
 msgid "Add another user account."
 msgstr "Προσθήκη άλλου χρήστη.. "
 
 #. i18n: file: ui/pages/usercreation.ui:286
 #. i18n: ectx: property (text), widget (QLabel, hostname_extra_label)
-#: rc.cpp:441
+#: rc.cpp:414
 msgid ""
 "<small>This name will be used if you make the computer visible to others on "
 "a network.</small>"
@@ -1669,61 +1600,61 @@ msgstr ""
 
 #. i18n: file: ui/pages/usercreation.ui:299
 #. i18n: ectx: property (text), widget (QLabel, label_3)
-#: rc.cpp:444
+#: rc.cpp:417
 msgid "...and, what is the name of this computer?"
 msgstr "...και, ποιο είναι το όνομα αυτού του υπολογιστή;"
 
 #. i18n: file: ui/widgets/avatardialog.ui:14
 #. i18n: ectx: property (windowTitle), widget (QWidget, AvatarDialog)
-#: rc.cpp:447
+#: rc.cpp:420
 msgid "Select an Avatar..."
 msgstr "Επιλογή Αvatar..."
 
 #. i18n: file: ui/widgets/userwidget.ui:46
 #. i18n: ectx: property (text), widget (QLabel, label)
-#: rc.cpp:456
+#: rc.cpp:429
 msgid "Login: "
 msgstr "Είσοδος: "
 
 #. i18n: file: ui/widgets/userwidget.ui:56
 #. i18n: ectx: property (text), widget (QLabel, label_2)
-#: rc.cpp:459
+#: rc.cpp:432
 msgid "Password: "
 msgstr "Kωδικός: "
 
 #. i18n: file: ui/widgets/userwidget.ui:94
 #. i18n: ectx: property (toolTip), widget (QPushButton, userDetails)
-#: rc.cpp:462
+#: rc.cpp:435
 msgid "Include more information about this user."
 msgstr "Συμπεριλάβετε περισσότερες πληροφορίες για αυτό το χρήστη."
 
 #. i18n: file: ui/widgets/userwidget.ui:124
 #. i18n: ectx: property (text), widget (QLabel, label_3)
-#: rc.cpp:465
+#: rc.cpp:438
 msgid "Confirm Password:"
 msgstr "Επαλήθευση κωδικού:"
 
 #. i18n: file: ui/widgets/userwidget.ui:146
 #. i18n: ectx: property (toolTip), widget (QPushButton, removeUser)
-#: rc.cpp:468
+#: rc.cpp:441
 msgid "Remove this user."
 msgstr "Διαγραφή αυτού του χρήστη."
 
 #. i18n: file: ui/widgets/userwidget.ui:264
 #. i18n: ectx: property (text), widget (QLabel, label_4)
-#: rc.cpp:471
+#: rc.cpp:444
 msgid "Name: "
 msgstr "Όνομα: "
 
 #. i18n: file: ui/widgets/userwidget.ui:307
 #. i18n: ectx: property (text), widget (QCheckBox, autoLoginCheckBox)
-#: rc.cpp:474
+#: rc.cpp:447
 msgid "Login Automatically"
 msgstr "Αυτόματη Είσοδος"
 
 #. i18n: file: ui/widgets/userwidget.ui:344
 #. i18n: ectx: property (text), widget (QCheckBox, rootUsesUserPwCheckBox)
-#: rc.cpp:477
+#: rc.cpp:450
 msgid ""
 "Use this password as \n"
 "the Administrator password"
@@ -1733,25 +1664,79 @@ msgstr ""
 
 #. i18n: file: ui/widgets/userwidget.ui:396
 #. i18n: ectx: property (text), widget (QLabel, label_5)
-#: rc.cpp:481
+#: rc.cpp:454
 msgid "Root Password:  "
 msgstr "Κωδικός Υπερχρήστη:"
 
 #. i18n: file: ui/widgets/userwidget.ui:406
 #. i18n: ectx: property (text), widget (QLabel, label_6)
-#: rc.cpp:484
+#: rc.cpp:457
 msgid "Confirm Root Password:  "
 msgstr "Επαλήθευση κωδικού Υπερχρήστη:"
 
-#: rc.cpp:485
+#: rc.cpp:458
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
 msgstr "Neo Kolokotronis Socrates Tzagiousis"
 
-#: rc.cpp:486
+#: rc.cpp:459
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "tetris4@gmail.com antisocrates@gmail.com"
+
+#~ msgid "installed"
+#~ msgstr "εγκαταστάθηκε"
+
+#~ msgid "Install Packaged Software"
+#~ msgstr "Εγκατάσταση Πακεταρισμένου Λογισμικού"
+
+#~ msgid ""
+#~ "Sorry, you have no internet connection at the moment \n"
+#~ "Will stop package(s) installation now"
+#~ msgstr ""
+#~ "Συγγνώμη αλλά δεν υπάρχει σύνδεση στο διαδίκτυο αυτή τη στιγμή Η "
+#~ "εγκατάσταση των πακέτων θα τερματιστεί."
+
+#~ msgid "Waiting for server..."
+#~ msgstr "Σε αναμονή διακομιστή.."
+
+#~ msgid ""
+#~ "The selected volume already has a partition table.. Overwrite it? (this "
+#~ "will destroy all data on the device)"
+#~ msgstr ""
+#~ "Ο επιλεγμένος τόμος έχει ήδη ένα πίνακα κατατμήσης...Να αντικατασταθεί; "
+#~ "(αυτό θα διαγράψει όλα τα δεδομένα στη συσκευή) "
+
+#~ msgid "Warning"
+#~ msgstr "Προειδοποίηση"
+
+#~ msgid ""
+#~ "This operation will destroy all data on the selected volume.. Continue "
+#~ "anyway?"
+#~ msgstr ""
+#~ "Η πράξη αυτή θα καταστρέψει όλα τα δεδομένα στον επιλεγμένο τόμο.. "
+#~ "Συνέχεια παρ' αυτά;"
+
+#~ msgid "Primary"
+#~ msgstr "Κύριος"
+
+#~ msgid "Install Packages"
+#~ msgstr "Εγκατάσταση Πακέτων"
+
+#~ msgid "Install"
+#~ msgstr "Εγκατάσταση"
+
+#~ msgid "Type: "
+#~ msgstr "Τύπος:"
+
+#~ msgid " MiB"
+#~ msgstr "ΜiB"
+
+#~ msgid "Create a new partition table on the selected device"
+#~ msgstr "Δημιουργία νέου πίνακα κατατμήσεων στην επιλεγμένη συσκευή"
+
+#~ msgid "Delete"
+#~ msgstr "Διαγραφή"
 
 #~ msgid ""
 #~ "It looks like your power adaptor is unplugged. Installation is a delicate "
@@ -2062,9 +2047,6 @@ msgstr "tetris4@gmail.com antisocrates@gmail.com"
 
 #~ msgid "%1 will be formatted with %2"
 #~ msgstr "Το %1 θα διαμορφωθεί με το %2"
-
-#~ msgid "Partitions mounted"
-#~ msgstr "Τα διαμερίσματα συνδέθηκαν"
 
 #~ msgid "Setting up root user ..."
 #~ msgstr "Γίνεται στήσιμο του χρήστη root..."

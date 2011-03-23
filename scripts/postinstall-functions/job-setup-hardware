@@ -221,6 +221,9 @@ job_setup_hardware()
 
 	unset RCCONF_MODULES
 	unset NEW_RCCONF_MODULES
+
+	# fixing alsa
+	alsactl -f ${mountpoint}/var/lib/alsa/asound.state store
 	
 	msg "umounting /proc, /sys and /dev"
 	umount -v ${mountpoint}/proc ${mountpoint}/sys ${mountpoint}/dev 

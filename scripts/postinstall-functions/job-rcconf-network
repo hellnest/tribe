@@ -40,7 +40,7 @@ job_rcconf_network()
 	else
 		msg "adding wicd daemons"
 		if [[ "`cat ${mountpoint}/etc/chakra-release`" > "0.3.49" ]] ; then
-		    sed -i -e 's/^.*DAEMONS=.*/DAEMONS=(syslog-ng dbus hal !network wicd avahi-daemon avahi-dnsconfd alsa cdemud kdm)/' ${mountpoint}/etc/rc.conf
+		    sed -i -e 's/^.*DAEMONS=.*/DAEMONS=(syslog-ng dbus !network wicd avahi-daemon avahi-dnsconfd alsa cdemud kdm)/' ${mountpoint}/etc/rc.conf
 		else
 		    sed -i -e 's/^.*DAEMONS=.*/DAEMONS=(syslog-ng dbus hal !network wicd avahi-daemon avahi-dnsconfd alsa cdemud kdm)/' ${mountpoint}/etc/rc.conf
 		fi
